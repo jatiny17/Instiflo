@@ -8,6 +8,7 @@
         android:fromAlpha="0.0"
         android:toAlpha="1.0"
         android:startOffset="1"/>
+
     <scale
         android:duration="2500"
         android:fromXScale=".5"

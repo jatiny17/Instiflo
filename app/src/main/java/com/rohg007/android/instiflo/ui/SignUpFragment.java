@@ -17,11 +17,11 @@ import com.rohg007.android.instiflo.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment {
+public class SignUpFragment extends Fragment {
 
-    private MaterialButton toSignUpButton;
+    private MaterialButton backToLoginButton;
 
-    public LoginFragment() {
+    public SignUpFragment() {
         // Required empty public constructor
     }
 
@@ -30,16 +30,15 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_login, container, false);
-        toSignUpButton= v.findViewById(R.id.to_sign_up_button);
-
-        toSignUpButton.setOnClickListener(new View.OnClickListener() {
+        View v = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        backToLoginButton = v.findViewById(R.id.back_to_login_button);
+        backToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SignUpFragment signUpFragment = new SignUpFragment();
+                LoginFragment loginFragment = new LoginFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container,signUpFragment).addToBackStack(null).commit();
+                fragmentTransaction.replace(R.id.container,loginFragment).addToBackStack(null).commit();
             }
         });
         return v;
