@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             style="@style/Widget.Instiflo.TextInputLayout"
             android:layout_margin="4dp"
-            android:hint="@string/login_username_hint"
+            android:hint="@string/login_email_hint"
             app:errorEnabled="true"
             android:id="@+id/username_text_layout">
 
@@ -94,40 +94,22 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/to_sign_up_button"
+            style="@style/Widget.Instiflo.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="16dp"
+            android:text="Sign Up" />
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
                 style="@style/Widget.Instiflo.Button.OutlinedButton"
-                android:layout_marginTop="16dp"
-                android:text="Sign Up"
-                android:layout_marginEnd="16dp"
-                android:id="@+id/to_sign_up_button"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="4dp"
-                android:fontFamily="@font/raleway_thin"
-                android:text="OR"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Instiflo.Button.OutlinedButton"
-                android:layout_marginTop="16dp"
                 android:text="@string/google_sign_in"
-                android:layout_marginStart="16dp"/>
-
-        </LinearLayout>
+                />
 
     </LinearLayout>
 

@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             style="@style/Widget.Instiflo.TextInputLayout"
             android:layout_margin="4dp"
-            android:hint="@string/login_username_hint"
+            android:hint="@string/login_email_hint"
             app:errorEnabled="true"
             android:id="@+id/signup_username_text_layout">
 
@@ -112,20 +112,11 @@
 
         </RelativeLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/raleway_thin"
-            android:text="OR"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back_to_login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Back to Login"
             android:layout_gravity="center_horizontal"
             style="@style/Widget.Instiflo.Button.TextButton"/>
