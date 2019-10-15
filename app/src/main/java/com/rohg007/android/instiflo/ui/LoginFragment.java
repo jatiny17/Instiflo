@@ -5,15 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -29,8 +36,12 @@ import com.rohg007.android.instiflo.R;
  */
 public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
+
     private String email;
     private String password;
+
+    private static final int RC_SIGN_IN = 1;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -45,6 +56,8 @@ public class LoginFragment extends Fragment {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(),gso);
 
         MaterialButton toSignUpButton= v.findViewById(R.id.to_sign_up_button);
         final TextInputLayout usernameInputLayout = v.findViewById(R.id.username_text_layout);
@@ -53,6 +66,7 @@ public class LoginFragment extends Fragment {
         final TextInputEditText passwordEditText = v.findViewById(R.id.password_edit_text);
         MaterialButton nextButton = v.findViewById(R.id.next_button);
         MaterialButton cancelButton = v.findViewById(R.id.login_cancel_button);
+        MaterialButton googleSignInButton = v.findViewById(R.id.google_sign_in_button);
 
 
         toSignUpButton.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +119,13 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInWithGoogle();
+            }
+        });
+
         return v;
     }
 
@@ -113,4 +134,29 @@ public class LoginFragment extends Fragment {
         passwordEditText.setText("");
     }
 
+    private void signInWithGoogle(){
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==RC_SIGN_IN){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            // Successfully SignedIn
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        } catch (ApiException e){
+            Log.e("Login Activity: ", e.getStatusCode()+" "+e.getMessage());
+        }
+    }
 }
