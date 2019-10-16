@@ -19,9 +19,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.rohg007.android.instiflo.ui.EventsFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
 import com.rohg007.android.instiflo.ui.LoginFragment;
 
@@ -37,9 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toobar_main);
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_main);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -62,7 +65,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             name = account.getDisplayName();
         }
 
-        Toast.makeText(getApplicationContext(),"Logged in as"+email+" "+name,Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager().beginTransaction().add(R.id.container_main,new EventsFragment()).commit();
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_events:
+                        getSupportFragmentManager().beginTransaction().add(R.id.container_main, new EventsFragment()).commit();
+                        break;
+                    case R.id.menu_buy:
+                        Toast.makeText(getApplicationContext(), "Buy Clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.menu_rent:
+                        Toast.makeText(getApplicationContext(), "Rent Clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.menu_shopping_cart:
+                        Toast.makeText(getApplicationContext(), "Shopping Cart", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -102,9 +126,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.logout:
                 logOut();
         }
-
         return true;
     }
+
+
 
     private void logOut(){
         GoogleSignInOptions gso = new GoogleSignInOptions.

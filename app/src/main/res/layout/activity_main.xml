@@ -24,7 +24,8 @@
             android:layout_gravity="bottom"
             app:menu="@menu/menu_bottom_nav"
             app:labelVisibilityMode="auto"
-            android:foregroundTint="@color/colorPrimaryDark" />
+            android:foregroundTint="@color/colorPrimaryDark"
+            app:itemHorizontalTranslationEnabled="true"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -34,6 +35,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start|left"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/menu_nav_drawer"/>
+        app:menu="@menu/menu_nav_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
