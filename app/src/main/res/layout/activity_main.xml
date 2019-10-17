@@ -25,7 +25,8 @@
             app:menu="@menu/menu_bottom_nav"
             app:labelVisibilityMode="auto"
             android:foregroundTint="@color/colorPrimaryDark"
-            app:itemHorizontalTranslationEnabled="true"/>
+            app:itemHorizontalTranslationEnabled="true"
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

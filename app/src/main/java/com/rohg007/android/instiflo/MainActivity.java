@@ -23,6 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.rohg007.android.instiflo.ui.BuyFragment;
 import com.rohg007.android.instiflo.ui.EventsFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
 import com.rohg007.android.instiflo.ui.LoginFragment;
@@ -72,13 +73,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_events:
-                        getSupportFragmentManager().beginTransaction().add(R.id.container_main, new EventsFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_main, new EventsFragment()).commit();
                         break;
                     case R.id.menu_buy:
-                        Toast.makeText(getApplicationContext(), "Buy Clicked", Toast.LENGTH_SHORT).show();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_main,new BuyFragment()).commit();
                         break;
                     case R.id.menu_rent:
-                        Toast.makeText(getApplicationContext(), "Rent Clicked", Toast.LENGTH_SHORT).show();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_main,new BuyFragment()).commit();
                         break;
                     case R.id.menu_shopping_cart:
                         Toast.makeText(getApplicationContext(), "Shopping Cart", Toast.LENGTH_SHORT).show();
