@@ -30,6 +30,7 @@ import com.rohg007.android.instiflo.ui.BuyFragment;
 import com.rohg007.android.instiflo.ui.EventsFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
 import com.rohg007.android.instiflo.ui.LoginFragment;
+import com.rohg007.android.instiflo.ui.ProductDetails;
 import com.rohg007.android.instiflo.ui.ShoppingCartFragment;
 import com.rohg007.android.instiflo.utils.ScrollHandler;
 
@@ -118,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this,"My Events Clicked",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_my_purchases:
-                Toast.makeText(this,"My Purchases Clicked",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, ProductDetails.class);
+                startActivity(intent);
                 break;
             case R.id.menu_my_products:
                 Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
