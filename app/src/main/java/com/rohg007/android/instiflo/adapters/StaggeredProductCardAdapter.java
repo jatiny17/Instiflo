@@ -42,8 +42,9 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
     public void onBindViewHolder(@NonNull StaggeredProductViewHolder holder, int position) {
         if (productList != null && position < productList.size()) {
             Product product = productList.get(position);
-            holder.productTitle.setText("Product");
-            holder.productPrice.setText("Rs. 99");
+            String price = "Rs. "+product.productPrice;
+            holder.productTitle.setText(product.productTitle);
+            holder.productPrice.setText(price);
         }
     }
 
