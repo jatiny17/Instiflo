@@ -9,6 +9,8 @@
         android:roundIcon="@drawable/instiflo_dark"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instiflo">
+        <activity android:name=".ui.ProductDetails"></activity>
+        <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,5 +30,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

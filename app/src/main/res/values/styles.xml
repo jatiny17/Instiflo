@@ -41,4 +41,7 @@
         <item name="strokeColor">@color/colorPrimary</item>
         <item name="strokeWidth">1dp</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

@@ -1,0 +1,47 @@
+package com.rohg007.android.instiflo.models;
+
+import java.util.ArrayList;
+
+public class Product {
+
+    private static final String LOG_TAG = Product.class.getSimpleName();
+    public String productTitle;
+    public int productPrice;
+
+    public Product(String productTitle, int productPrice){
+        this.productTitle=productTitle;
+        this.productPrice=productPrice;
+    }
+
+
+    public String getProductTitle() {
+        return productTitle;
+    }
+
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public static ArrayList<Product> getTestProducts(){
+        ArrayList<Product> productList = new ArrayList<>();
+        productList.add(new Product("Product 1",99));
+        productList.add(new Product("Product 2",199));
+        productList.add(new Product("Product 3",299));
+        productList.add(new Product("Product 4",399));
+        productList.add(new Product("Product 5",99));
+        productList.add(new Product("Product 6",199));
+        productList.add(new Product("Product 7",299));
+        productList.add(new Product("Product 8",399));
+        productList.add(new Product("Product 9",199));
+        productList.add(new Product("Product 10",299));
+        return productList;
+    }
+}
