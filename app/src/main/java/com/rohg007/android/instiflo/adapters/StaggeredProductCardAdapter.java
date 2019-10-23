@@ -3,18 +3,21 @@ package com.rohg007.android.instiflo.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Product;
 
+import java.util.HashSet;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredProductViewHolder> {
+public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredProductCardAdapter.StaggeredProductViewHolder> {
 
     private List<Product> productList;
+    private View.OnClickListener onItemClickListener;
 
     public StaggeredProductCardAdapter(List<Product> productList){
         this.productList=productList;
@@ -51,5 +54,24 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
     @Override
     public int getItemCount() {
         return productList.size();
+    }
+
+    public void setOnItemClickListener(View.OnClickListener itemClickListener){
+        onItemClickListener=itemClickListener;
+    }
+
+    public class StaggeredProductViewHolder extends RecyclerView.ViewHolder {
+
+        TextView productTitle;
+        TextView productPrice;
+
+        StaggeredProductViewHolder(@NonNull View itemView){
+            super(itemView);
+            productTitle = itemView.findViewById(R.id.product_title);
+            productPrice = itemView.findViewById(R.id.product_price);
+
+            itemView.setTag(this);
+            itemView.setOnClickListener(onItemClickListener);
+        }
     }
 }
