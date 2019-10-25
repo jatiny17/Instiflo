@@ -24,6 +24,11 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <style name="Widget.Instiflo.TextInputLayout.Form" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:paddingBottom">8dp</item>
+        <item name="boxStrokeColor">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="Widget.Instiflo.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/textColorLight</item>
         <item name="backgroundTint">?attr/colorPrimaryDark</item>
@@ -42,6 +47,9 @@
         <item name="strokeWidth">2dp</item>
     </style>
 
+    <style name="ToobarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:colorControlNormal">@color/textColorPrimary</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

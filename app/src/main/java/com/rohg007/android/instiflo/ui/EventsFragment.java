@@ -1,6 +1,7 @@
 package com.rohg007.android.instiflo.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -70,6 +71,14 @@ public class EventsFragment extends Fragment {
                 else if(dy<0) {
                     fab.show();
                 }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),AddEvent.class);
+                startActivity(intent);
             }
         });
 

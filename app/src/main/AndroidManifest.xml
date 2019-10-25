@@ -9,8 +9,8 @@
         android:roundIcon="@drawable/instiflo_dark"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instiflo">
-        <activity android:name=".ui.AddEventActivity"></activity>
-        <activity android:name=".ui.AddEvent" />
+        <activity android:name=".ui.AddEvent"></activity>
+        <activity android:name=".ui.AddEventActivity" />
         <activity android:name=".ui.ProductDetails" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.SplashActivity">
