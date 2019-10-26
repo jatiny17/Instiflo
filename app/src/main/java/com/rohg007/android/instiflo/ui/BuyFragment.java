@@ -82,6 +82,14 @@ public class BuyFragment extends Fragment {
 
         recyclerView.addItemDecoration(new ProductGridItemDecoration(largePadding,smallPadding));
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),AddProduct.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
