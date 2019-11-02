@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rohg007.android.instiflo">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/instiflo_dark"
@@ -9,7 +14,8 @@
         android:roundIcon="@drawable/instiflo_dark"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instiflo">
-        <activity android:name=".ui.AddProduct"></activity>
+        <activity android:name=".ui.UserDetailsActivity"></activity>
+        <activity android:name=".ui.AddProduct" />
         <activity android:name=".ui.AddEvent" />
         <activity android:name=".ui.AddEventActivity" />
         <activity android:name=".ui.ProductDetails" />

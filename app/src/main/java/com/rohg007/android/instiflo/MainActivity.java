@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,6 +33,7 @@ import com.rohg007.android.instiflo.ui.LoginActivity;
 import com.rohg007.android.instiflo.ui.LoginFragment;
 import com.rohg007.android.instiflo.ui.ProductDetails;
 import com.rohg007.android.instiflo.ui.ShoppingCartFragment;
+import com.rohg007.android.instiflo.ui.UserDetailsActivity;
 import com.rohg007.android.instiflo.utils.ScrollHandler;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -58,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_main);
+
+        View headerView = navigationView.getHeaderView(0);
+        ImageView headerImage = headerView.findViewById(R.id.header_img);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -94,6 +99,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+
+        headerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onHeaderImageClick();
+            }
+        });
+    }
+
+    private void onHeaderImageClick(){
+        Intent intent = new Intent(MainActivity.this, UserDetailsActivity.class);
+        startActivity(intent);
     }
 
     @Override
