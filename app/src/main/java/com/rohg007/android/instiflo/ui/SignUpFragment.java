@@ -98,7 +98,9 @@ public class SignUpFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
                                 Toast.makeText(getContext(),"Successfully Registered", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(),MainActivity.class);
+                                Intent intent = new Intent(getActivity(),UserDetailsActivity.class);
+                                intent.putExtra("email",username);
+                                intent.putExtra("id",mAuth.getCurrentUser().getUid());
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(getContext(),"Registration Failed",Toast.LENGTH_SHORT).show();

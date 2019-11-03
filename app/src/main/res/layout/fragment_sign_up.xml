@@ -113,23 +113,14 @@
 
         </RelativeLayout>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/raleway_thin"
-            android:text="OR"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back_to_login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back to Login"
             android:layout_gravity="center_horizontal"
-            style="@style/Widget.Instiflo.Button.TextButton"/>
+            style="@style/Widget.Instiflo.Button.OutlinedButton"
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
 
 </ScrollView>

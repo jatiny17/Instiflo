@@ -30,7 +30,6 @@ public class SplashActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        account = GoogleSignIn.getLastSignedInAccount(this);
 
         splashBranding = findViewById(R.id.splash_branding);
         new Handler().postDelayed(new Runnable() {
@@ -39,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 Intent intent;
 
-                if(currentUser==null && account==null)
+                if(currentUser==null)
                     intent = new Intent(SplashActivity.this,LoginActivity.class);
                 else
                     intent = new Intent(SplashActivity.this,MainActivity.class);

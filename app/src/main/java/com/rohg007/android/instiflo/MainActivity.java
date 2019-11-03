@@ -9,11 +9,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,7 +28,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rohg007.android.instiflo.adapters.CartAdapter;
+import com.rohg007.android.instiflo.models.User;
 import com.rohg007.android.instiflo.ui.BuyFragment;
 import com.rohg007.android.instiflo.ui.EventsFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
@@ -35,13 +40,24 @@ import com.rohg007.android.instiflo.ui.ProductDetails;
 import com.rohg007.android.instiflo.ui.ShoppingCartFragment;
 import com.rohg007.android.instiflo.ui.UserDetailsActivity;
 import com.rohg007.android.instiflo.utils.ScrollHandler;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     String email;
     String name;
+    Uri photoUrl;
+
     private static boolean FLAG= false;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient googleSignInClient;
+    private GoogleSignInAccount account;
+    private FirebaseUser user;
+
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +79,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerView = navigationView.getHeaderView(0);
         ImageView headerImage = headerView.findViewById(R.id.header_img);
+        TextView navEmail = headerView.findViewById(R.id.header_email);
 
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestProfile()
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .build();
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        googleSignInClient = GoogleSignIn.getClient(this,gso);
+
+        account = GoogleSignIn.getLastSignedInAccount(this);
 
         if(user!=null){
             email=user.getEmail();
@@ -75,7 +101,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             email = account.getEmail();
             name = account.getDisplayName();
+            photoUrl = account.getPhotoUrl();
         }
+
+        navEmail.setText(email);
+
+        Picasso.get()
+                .load(photoUrl)
+                .centerCrop()
+                .error(R.drawable.instiflo_light)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(headerImage);
 
         getSupportFragmentManager().beginTransaction().add(R.id.container_main,new EventsFragment()).commit();
 
@@ -110,7 +146,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void onHeaderImageClick(){
         Intent intent = new Intent(MainActivity.this, UserDetailsActivity.class);
+        intent.putExtra("email",email);
+        intent.putExtra("id",user.getUid());
         startActivity(intent);
+    }
+
+    private void getUserDetails(){
+       
     }
 
     @Override
@@ -157,13 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void logOut(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.
-                Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
-                requestEmail().
-                build();
 
-        GoogleSignInClient googleSignInClient= GoogleSignIn.getClient(this,gso);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
         if(account==null) {
             FirebaseAuth.getInstance().signOut();
