@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,8 +29,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rohg007.android.instiflo.adapters.CartAdapter;
 import com.rohg007.android.instiflo.models.User;
 import com.rohg007.android.instiflo.ui.BuyFragment;
@@ -57,16 +61,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GoogleSignInAccount account;
     private FirebaseUser user;
 
-    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private User globalUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //////////Toolbar Here///////////////
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
+        //////Navigation Drawer Here///////////
         drawerLayout = findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(drawerToggle);
@@ -77,13 +86,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_main);
 
+        /////////Navigation View Header////////////
         View headerView = navigationView.getHeaderView(0);
         ImageView headerImage = headerView.findViewById(R.id.header_img);
         TextView navEmail = headerView.findViewById(R.id.header_email);
 
+        database = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
         gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -95,14 +104,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         account = GoogleSignIn.getLastSignedInAccount(this);
 
-        if(user!=null){
-            email=user.getEmail();
-            name=user.getDisplayName();
-        } else {
-            email = account.getEmail();
-            name = account.getDisplayName();
-            photoUrl = account.getPhotoUrl();
-        }
+        //////////retrieving user details////////////
+        getUserDetails();
+
+        email= user.getEmail();
 
         navEmail.setText(email);
 
@@ -147,12 +152,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void onHeaderImageClick(){
         Intent intent = new Intent(MainActivity.this, UserDetailsActivity.class);
         intent.putExtra("email",email);
-        intent.putExtra("id",user.getUid());
+        intent.putExtra("id",globalUser.getUserId());
+        intent.putExtra("firstName",globalUser.getFirstName());
+        intent.putExtra("lastName",globalUser.getLastName());
+        intent.putExtra("address",globalUser.getAddress());
+        intent.putExtra("phone",globalUser.getPhoneNumber());
+        intent.putExtra("imageUrl",globalUser.getUserImageUrl());
         startActivity(intent);
     }
 
     private void getUserDetails(){
-       
+        String path = "users/".concat(user.getUid());
+       DatabaseReference databaseReference = database.getReference(path);
+       databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               globalUser = dataSnapshot.getValue(User.class);
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+               Log.e(LOG_TAG,"Cannot retrieve user details");
+           }
+       });
     }
 
     @Override
@@ -199,13 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void logOut(){
-
-
-        if(account==null) {
-            FirebaseAuth.getInstance().signOut();
-        } else {
-            googleSignInClient.signOut();
-        }
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
         startActivity(intent);
     }

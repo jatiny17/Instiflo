@@ -8,14 +8,19 @@ public class User {
     private String email;
     private String address;
     private String phoneNumber;
+    private String userImageUrl;
 
-    public User(String userId, String firstName, String lastName, String email, String address, String phoneNumber) {
+    public User() {
+    }
+
+    public User(String userId, String firstName, String lastName, String email, String address, String phoneNumber, String userImageUrl) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.userImageUrl = userImageUrl;
     }
 
     public String getUserId() {
@@ -64,5 +69,13 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getUserImageUrl() {
+        return userImageUrl;
+    }
+
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
     }
 }
