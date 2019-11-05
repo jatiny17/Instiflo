@@ -77,7 +77,7 @@ public class AddProduct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(AddProduct.this, "Clear", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddProduct.this, "Clear", Toast.LENGTH_SHORT).show();
                 product_title.getText().clear();
                 product_price.getText().clear();
                 product_unit.getText().clear();
