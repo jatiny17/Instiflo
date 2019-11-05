@@ -143,7 +143,7 @@
                 style="@style/Widget.Instiflo.TextInputLayout.Form">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/event_description_edt"
+                    android:id="@+id/product_description_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"/>

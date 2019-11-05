@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -73,7 +72,7 @@ public class AddEvent extends AppCompatActivity {
         event_date=(TextInputEditText)findViewById(R.id.event_date_edt);
         event_time=(TextInputEditText)findViewById(R.id.event_time_edt);
         event_location=(TextInputEditText)findViewById(R.id.event_location_edt);
-        event_description=(TextInputEditText)findViewById(R.id.event_description_edt);
+        event_description=(TextInputEditText)findViewById(R.id.product_description_edt);
 
         clear_event_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +98,12 @@ public class AddEvent extends AppCompatActivity {
 //                Toast.makeText(AddEvent.this, "Add Event clicked", Toast.LENGTH_SHORT).show();
 
                 Boolean flag=true;
+
+                event_title.setError(null);
+                event_date.setError(null);
+                event_time.setError(null);
+                event_description.setError(null);
+                event_location.setError(null);
 
                 if(title.isEmpty()) {
                     event_title.setError("Event title can't be empty");

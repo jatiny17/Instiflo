@@ -136,7 +136,7 @@
                 style="@style/Widget.Instiflo.TextInputLayout.Form">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/event_description_edt"
+                    android:id="@+id/product_description_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"/>
@@ -144,7 +144,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/event_clear_button"
+                android:id="@+id/product_clear_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CLEAR"
