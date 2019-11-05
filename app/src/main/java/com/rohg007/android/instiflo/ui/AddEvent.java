@@ -32,6 +32,7 @@ public class AddEvent extends AppCompatActivity {
     private Uri mImageUri;
     private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
     ImageView browseImageView;
+    private TextInputEditText event_title,event_date,event_time,event_location,event_description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +69,31 @@ public class AddEvent extends AppCompatActivity {
         MaterialButton add_event_button=(MaterialButton)findViewById(R.id.add_event_button);
         MaterialButton clear_event_button=(MaterialButton) findViewById(R.id.event_clear_button);
 
+        event_title=(TextInputEditText)findViewById(R.id.event_title_edt);
+        event_date=(TextInputEditText)findViewById(R.id.event_date_edt);
+        event_time=(TextInputEditText)findViewById(R.id.event_time_edt);
+        event_location=(TextInputEditText)findViewById(R.id.event_location_edt);
+        event_description=(TextInputEditText)findViewById(R.id.event_description_edt);
+
+        clear_event_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                event_title.getText().clear();
+                event_date.getText().clear();
+                event_time.getText().clear();
+                event_location.getText().clear();
+                event_description.getText().clear();
+            }
+        });
+
         add_event_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                TextInputEditText event_title=(TextInputEditText)findViewById(R.id.event_title_edt);
-                TextInputEditText event_date=(TextInputEditText)findViewById(R.id.event_date_edt);
-                TextInputEditText event_time=(TextInputEditText)findViewById(R.id.event_time_edt);
-                TextInputEditText event_description=(TextInputEditText)findViewById(R.id.event_description_edt);
-
                 //
                 String title=event_title.getText().toString().trim();
                 String date=event_date.getText().toString().trim();
                 String time=event_time.getText().toString().trim();
+                String location=event_location.getText().toString().trim();
                 String description=event_description.getText().toString();
 
 //                Toast.makeText(AddEvent.this, "Add Event clicked", Toast.LENGTH_SHORT).show();
@@ -102,6 +115,11 @@ public class AddEvent extends AppCompatActivity {
                     flag=false;
                 }
 
+                if(location.isEmpty()) {
+                    event_location.setError("Event location can't be empty");
+                    flag=false;
+                }
+
                 if(description.isEmpty()) {
                     event_description.setError("Event description can't be empty");
                     flag=false;
@@ -109,7 +127,7 @@ public class AddEvent extends AppCompatActivity {
 
                 if(flag)
                 {
-                    Event event=new Event(title, date, time, "", description);
+                    Event event=new Event(title, date, time, location, description);
 //                    Toast.makeText(AddEvent.this, event.getEventTitle()+" "+event.getEventDate()+" "+event.getEventTime(), Toast.LENGTH_LONG).show();
 
                     databaseReference.child("events").push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -126,6 +144,8 @@ public class AddEvent extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     private void openFileChooser(){
