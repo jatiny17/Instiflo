@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -17,6 +18,11 @@ import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ramotion.foldingcell.FoldingCell;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.adapters.EventsAdapter;
@@ -29,8 +35,10 @@ import java.util.ArrayList;
  */
 public class EventsFragment extends Fragment {
 
-    private ArrayList<Event> mEventList = Event.getTestEvents();
+    private ArrayList<Event> mEventList=new ArrayList<Event>();
     EventsAdapter adapter;
+    DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+
 
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
@@ -57,6 +65,37 @@ public class EventsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter = new EventsAdapter(mEventList);
         recyclerView.setAdapter(adapter);
+
+        databaseReference.child("events").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Event event=dataSnapshot.getValue(Event.class);
+                mEventList.add(event);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         adapter.setOnItemClickListener(onItemClickListener);
 
         final FloatingActionButton fab = getActivity().findViewById(R.id.fab);

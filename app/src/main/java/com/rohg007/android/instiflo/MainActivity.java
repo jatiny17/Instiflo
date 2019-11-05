@@ -91,25 +91,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView headerImage = headerView.findViewById(R.id.header_img);
         TextView navEmail = headerView.findViewById(R.id.header_email);
 
-        database = FirebaseDatabase.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestProfile()
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this,gso);
-
-        account = GoogleSignIn.getLastSignedInAccount(this);
+//        database = FirebaseDatabase.getInstance();
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        gso = new GoogleSignInOptions
+//                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .requestProfile()
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .build();
+//
+//        googleSignInClient = GoogleSignIn.getClient(this,gso);
+//
+//        account = GoogleSignIn.getLastSignedInAccount(this);
 
         //////////retrieving user details////////////
-        getUserDetails();
+//        getUserDetails();
 
-        email= user.getEmail();
+//        email= user.getEmail();
 
-        navEmail.setText(email);
+//        navEmail.setText(email);
 
         Picasso.get()
                 .load(photoUrl)
@@ -213,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this,"About Us Clicked",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.logout:
-                logOut();
+                Toast.makeText(this,"Log Out Clicked",Toast.LENGTH_SHORT).show();
+                break;
         }
         return true;
     }
