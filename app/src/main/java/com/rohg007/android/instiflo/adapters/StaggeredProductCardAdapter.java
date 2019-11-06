@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Product;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -16,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredProductCardAdapter.StaggeredProductViewHolder> {
 
-    private List<Product> productList;
+    private ArrayList<Product> productList;
     private View.OnClickListener onItemClickListener;
 
-    public StaggeredProductCardAdapter(List<Product> productList){
+    public StaggeredProductCardAdapter(ArrayList<Product> productList){
         this.productList=productList;
     }
 
