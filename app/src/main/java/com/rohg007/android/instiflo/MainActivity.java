@@ -50,7 +50,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     String email;
     String name;
-    Uri photoUrl;
+    String photoUrl;
+    TextView navEmail;
+    ImageView headerImage;
+
 
     private static boolean FLAG= false;
     private DrawerLayout drawerLayout;
@@ -88,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         /////////Navigation View Header////////////
         View headerView = navigationView.getHeaderView(0);
-        ImageView headerImage = headerView.findViewById(R.id.header_img);
-        TextView navEmail = headerView.findViewById(R.id.header_email);
+        headerImage = headerView.findViewById(R.id.header_img);
+        navEmail = headerView.findViewById(R.id.header_email);
 
         database = FirebaseDatabase.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -104,19 +107,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         account = GoogleSignIn.getLastSignedInAccount(this);
 
-        //////////retrieving user details////////////
         getUserDetails();
 
-        email= user.getEmail();
-
-        navEmail.setText(email);
-
-        Picasso.get()
-                .load(photoUrl)
-                .centerCrop()
-                .error(R.drawable.instiflo_light)
-                .placeholder(R.mipmap.ic_launcher_round)
-                .into(headerImage);
+        //////////retrieving user details////////////
 
         getSupportFragmentManager().beginTransaction().add(R.id.container_main,new EventsFragment()).commit();
 
@@ -167,7 +160,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               globalUser = dataSnapshot.getValue(User.class);
+               User tempUser = dataSnapshot.getValue(User.class);
+               email = tempUser.getEmail();
+               navEmail.setText(email);
+               photoUrl = tempUser.getUserImageUrl();
+
+               Picasso.get()
+                       .load(photoUrl)
+                       .error(R.drawable.instiflo_light)
+                       .placeholder(R.mipmap.ic_launcher_round)
+                       .into(headerImage);
+
+               globalUser=tempUser;
            }
 
            @Override

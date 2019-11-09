@@ -10,6 +10,14 @@ public class Event {
     private String eventLocation;
     private String eventDescription;
 
+    public Event() {
+        this.eventTitle = "";
+        this.eventDate = "";
+        this.eventTime = "";
+        this.eventLocation = "";
+        this.eventDescription = "";
+    }
+
     public Event(String eventTitle, String eventDate, String eventTime, String eventLocation, String eventDescription) {
         this.eventTitle = eventTitle;
         this.eventDate = eventDate;

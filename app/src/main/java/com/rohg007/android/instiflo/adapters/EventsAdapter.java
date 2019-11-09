@@ -1,10 +1,14 @@
 package com.rohg007.android.instiflo.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ramotion.foldingcell.FoldingCell;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Event;
 
@@ -82,6 +86,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
         TextView eventLocationContentView;
         TextView eventDescriptionContentView;
 
+        RelativeLayout relativeLayout;
+
         public EventsViewHolder(@NonNull View itemView) {
             super(itemView);
             eventTitleTitleView = itemView.findViewById(R.id.event_title_title);
@@ -92,6 +98,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             eventTimeContentView = itemView.findViewById(R.id.event_content_time);
             eventLocationContentView = itemView.findViewById(R.id.event_content_location);
             eventDescriptionContentView = itemView.findViewById(R.id.event_content_description);
+            relativeLayout=itemView.findViewById(R.id.detail_relative);
 
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);
