@@ -109,7 +109,7 @@ public class AddEvent extends AppCompatActivity {
                     event_title.setError("Event title can't be empty");
                     flag=false;
                 }
-//
+////
                 if(date.isEmpty()) {
                     event_date.setError("Event date can't be empty");
                     flag=false;
