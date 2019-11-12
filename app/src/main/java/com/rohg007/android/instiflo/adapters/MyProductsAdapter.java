@@ -40,4 +40,5 @@ public class MyProductsAdapter extends RecyclerView.Adapter<CartAdapterViewHolde
         return productArrayList.size();
     }
 }
+//
 
