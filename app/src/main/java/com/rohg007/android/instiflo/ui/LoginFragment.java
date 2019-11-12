@@ -24,10 +24,18 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rohg007.android.instiflo.MainActivity;
 import com.rohg007.android.instiflo.R;
 
@@ -56,7 +64,13 @@ public class LoginFragment extends Fragment {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(),gso);
 
         MaterialButton toSignUpButton= v.findViewById(R.id.to_sign_up_button);
@@ -145,18 +159,46 @@ public class LoginFragment extends Fragment {
 
         if(requestCode==RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+            try{
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e){
+                Toast.makeText(getContext(),"Sign-In Failed", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            // Successfully SignedIn
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
-        } catch (ApiException e){
-            Log.e("Login Activity: ", e.getStatusCode()+" "+e.getMessage());
-        }
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account){
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users").child(mAuth.getCurrentUser().getUid());
+                    rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.getValue()==null){
+                                Intent intent = new Intent(getActivity(),UserDetailsActivity.class);
+                                intent.putExtra("email",mAuth.getCurrentUser().getEmail());
+                                intent.putExtra("id",mAuth.getCurrentUser().getUid());
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(getActivity(),MainActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(),"Authentication Failed",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
