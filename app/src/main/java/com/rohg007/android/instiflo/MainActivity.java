@@ -4,35 +4,28 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.rohg007.android.instiflo.adapters.CartAdapter;
 import com.rohg007.android.instiflo.ui.BuyFragment;
 import com.rohg007.android.instiflo.ui.EventsFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
-import com.rohg007.android.instiflo.ui.LoginFragment;
+import com.rohg007.android.instiflo.ui.MyProducts;
 import com.rohg007.android.instiflo.ui.ProductDetails;
 import com.rohg007.android.instiflo.ui.ShoppingCartFragment;
-import com.rohg007.android.instiflo.utils.ScrollHandler;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     String email;
@@ -123,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.menu_my_products:
-                Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MyProducts.class));
+                //Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_settings:
                 Toast.makeText(this,"Settings Clicked",Toast.LENGTH_SHORT).show();

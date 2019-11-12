@@ -5,29 +5,26 @@ import java.util.ArrayList;
 public class Product {
 
     private static final String LOG_TAG = Product.class.getSimpleName();
-    public String productTitle;
-    public int productPrice;
+    private String productTitle;
+    private int productPrice;
+
+    public Product()
+    {
+        productTitle = "";
+        productPrice = 0;
+    }
 
     public Product(String productTitle, int productPrice){
         this.productTitle=productTitle;
         this.productPrice=productPrice;
     }
 
-
     public String getProductTitle() {
         return productTitle;
     }
 
-    public void setProductTitle(String productTitle) {
-        this.productTitle = productTitle;
-    }
-
     public int getProductPrice() {
         return productPrice;
-    }
-
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
     }
 
     public static ArrayList<Product> getTestProducts(){
