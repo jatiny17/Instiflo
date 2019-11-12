@@ -41,6 +41,7 @@ import com.rohg007.android.instiflo.ui.EventsFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
 import com.rohg007.android.instiflo.ui.LoginFragment;
 import com.rohg007.android.instiflo.ui.ProductDetails;
+import com.rohg007.android.instiflo.ui.RentFragment;
 import com.rohg007.android.instiflo.ui.ShoppingCartFragment;
 import com.rohg007.android.instiflo.ui.UserDetailsActivity;
 import com.rohg007.android.instiflo.utils.ScrollHandler;
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         getSupportFragmentManager().beginTransaction().replace(R.id.container_main,new BuyFragment()).commit();
                         break;
                     case R.id.menu_rent:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container_main,new BuyFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_main,new RentFragment()).commit();
                         break;
                     case R.id.menu_shopping_cart:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container_main, new ShoppingCartFragment()).commit();

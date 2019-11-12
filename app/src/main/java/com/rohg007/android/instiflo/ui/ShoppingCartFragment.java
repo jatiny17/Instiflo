@@ -27,7 +27,7 @@ public class ShoppingCartFragment extends Fragment {
     }
 
 
-    @Override
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -38,6 +38,6 @@ public class ShoppingCartFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         return v;
-    }
+    }*/
 
 }
