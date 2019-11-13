@@ -76,10 +76,30 @@
                 android:id="@+id/buy_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buy"
+                android:text="Sell"
                 android:layout_below="@id/product_title_textinput_layout"
                 android:layout_toRightOf="@id/rent_checkbox"
                 android:layout_marginStart="48dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/product_duration_textinput_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/rent_checkbox"
+                android:hint="Rent Duration (in days)"
+                app:errorEnabled="true"
+                style="@style/Widget.Instiflo.TextInputLayout.Form">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/product_rent_duration_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:inputType="numberDecimal"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/product_price_textinput_layout"
@@ -88,7 +108,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_below="@id/rent_checkbox"
+                android:layout_below="@id/product_duration_textinput_layout"
                 android:hint="Product Price (in INR)"
                 app:errorEnabled="true"
                 style="@style/Widget.Instiflo.TextInputLayout.Form">
@@ -136,7 +156,7 @@
                 style="@style/Widget.Instiflo.TextInputLayout.Form">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/event_description_edt"
+                    android:id="@+id/product_description_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"/>
@@ -144,7 +164,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/event_clear_button"
+                android:id="@+id/product_clear_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CLEAR"
