@@ -29,7 +29,7 @@ import com.rohg007.android.instiflo.models.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuyFragment extends Fragment {
+public class RentFragment extends Fragment {
     //private ArrayList<Product> mProductList = new ArrayList<Product>();
     private ArrayList<Product> mProductList=new ArrayList<Product>();
     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
@@ -49,7 +49,7 @@ public class BuyFragment extends Fragment {
         }
     };
 
-    public BuyFragment() {
+    public RentFragment() {
         // Required empty public constructor
     }
 
@@ -76,7 +76,7 @@ public class BuyFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Product product=dataSnapshot.getValue(Product.class);
-                if(product.getProductCategory()==1 ||product.getProductCategory()==3)
+                if(product.getProductCategory()==2 ||product.getProductCategory()==3)
                 {
                     mProductList.add(product);
                     adapter.notifyDataSetChanged();
