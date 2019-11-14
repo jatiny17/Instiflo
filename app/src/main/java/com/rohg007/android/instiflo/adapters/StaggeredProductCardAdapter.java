@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.ViewTarget;
+import com.android.volley.toolbox.NetworkImageView;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Product;
 
@@ -18,7 +17,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
+import com.rohg007.android.instiflo.utils.ImageRequester;
 import com.squareup.picasso.Picasso;
 
 public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredProductCardAdapter.StaggeredProductViewHolder> {
@@ -26,9 +26,11 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
     private List<Product> productList;
     private View.OnClickListener onItemClickListener;
     private Context context;
+    private ImageRequester imageRequester;
 
     public StaggeredProductCardAdapter(List<Product> productList){
         this.productList=productList;
+        imageRequester = ImageRequester.getInstance();
     }
 
     @Override
@@ -59,9 +61,7 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
             holder.productPrice.setText(price);
             //imageView.setImageBitmap(getBitmapFromURL(url));
             //Glide.with(context).load(product.getProductImageUrl()).into(holder.productimage);
-            Picasso.get()
-                    .load(url)
-                    .into(holder.productimage);
+            imageRequester.setImageFromUrl(holder.productimage,url);
         }
     }
 
@@ -78,12 +78,12 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
 
         TextView productTitle;
         TextView productPrice;
-        ImageView productimage;
+        NetworkImageView productimage;
         StaggeredProductViewHolder(@NonNull View itemView){
             super(itemView);
             productTitle = (TextView)itemView.findViewById(R.id.product_title);
             productPrice = (TextView)itemView.findViewById(R.id.product_price);
-            productimage = (ImageView)itemView.findViewById(R.id.product_image);
+            productimage = itemView.findViewById(R.id.product_image);
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);
         }
