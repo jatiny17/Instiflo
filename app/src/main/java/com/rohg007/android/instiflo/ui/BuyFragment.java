@@ -23,11 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.Nullable;
 import com.rohg007.android.instiflo.R;
-import com.rohg007.android.instiflo.adapters.StaggeredProductCardAdapter;
+import com.rohg007.android.instiflo.adapters.StaggeredSellProductCardAdapter;
 import com.rohg007.android.instiflo.models.Product;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BuyFragment extends Fragment {
     //private ArrayList<Product> mProductList = new ArrayList<Product>();
@@ -45,6 +44,7 @@ public class BuyFragment extends Fragment {
             Product product = mProductList.get(position);
             Intent intent = new Intent(getActivity(),ProductDetails.class);
             intent.putExtra("productId",product.getProductId());
+            intent.putExtra("from","buyFragment");
             startActivity(intent);
         }
     };
@@ -68,7 +68,7 @@ public class BuyFragment extends Fragment {
             }
         });
         recyclerView.setLayoutManager(gridLayoutManager);
-        final StaggeredProductCardAdapter adapter = new StaggeredProductCardAdapter(mProductList);
+        final StaggeredSellProductCardAdapter adapter = new StaggeredSellProductCardAdapter(mProductList);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(onItemClickListener);
 
