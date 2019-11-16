@@ -82,16 +82,17 @@ public class EventsFragment extends Fragment {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                adapter.notifyDataSetChanged();
+
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Failed to retrieve data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Error in retrieving some data,please try again", Toast.LENGTH_SHORT).show();
             }
         });
 

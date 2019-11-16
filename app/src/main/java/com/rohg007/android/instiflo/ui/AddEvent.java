@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rohg007.android.instiflo.R;
@@ -132,10 +133,14 @@ public class AddEvent extends AppCompatActivity {
 
                 if(flag)
                 {
-                    Event event=new Event(title, date, time, location, description);
+                    String creator=FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    String eventId=databaseReference.push().getKey();
+                    String imageId="";
+
+                    Event event=new Event(creator,eventId,title, date, time, location, description,imageId);
 //                    Toast.makeText(AddEvent.this, event.getEventTitle()+" "+event.getEventDate()+" "+event.getEventTime(), Toast.LENGTH_LONG).show();
 
-                    databaseReference.child("events").push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    databaseReference.child("events").child(eventId).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
