@@ -147,15 +147,15 @@ public class AddEvent extends AppCompatActivity {
                 {
                     if(mImageUri!=null)
                     {
-                        final StorageReference childRef = storageReference.child(System.currentTimeMillis() + "." + GetFileExtension(mImageUri));
-                        //uploading the image
-                        UploadTask uploadTask = childRef.putFile(mImageUri);
+                        final StorageReference childRef = storageReference.child("events");
+                        final StorageReference childRef2=childRef.child(System.currentTimeMillis() + "." + GetFileExtension(mImageUri));
+                        UploadTask uploadTask = childRef2.putFile(mImageUri);
 
                         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                childRef2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
 
@@ -191,7 +191,7 @@ public class AddEvent extends AppCompatActivity {
                     {
                         String creator=FirebaseAuth.getInstance().getCurrentUser().getUid();
                         String eventId=databaseReference.push().getKey();
-                        String imageId="";
+                        String imageId="https://firebasestorage.googleapis.com/v0/b/instiflo.appspot.com/o/instiflo_dark_bg.png?alt=media&token=3add8b05-b4ed-4c09-8b7e-ce13c0e19109";
                         Event event=new Event(creator,eventId,title, date, time, location, description,imageId);
 
 //                                Toast.makeText(AddEvent.this, event.getEventTitle()+" "+event.getEventDate()+" "+event.getEventTime(), Toast.LENGTH_LONG).show();

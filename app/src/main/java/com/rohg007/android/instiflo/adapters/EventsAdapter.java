@@ -2,6 +2,9 @@ package com.rohg007.android.instiflo.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +12,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.ramotion.foldingcell.FoldingCell;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Event;
+import com.rohg007.android.instiflo.utils.ImageRequester;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -24,9 +33,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
     private ArrayList<Event> eventsList;
     private View.OnClickListener onItemClickListener;
     private HashSet<Integer> unfoldedIndexes = new HashSet<>();
+    private ImageRequester imageRequester;
 
     public EventsAdapter(ArrayList<Event> eventsList){
         this.eventsList = eventsList;
+        imageRequester=ImageRequester.getInstance();
     }
 
     @NonNull
@@ -40,6 +51,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
     public void onBindViewHolder(@NonNull EventsViewHolder holder, int position) {
         if(eventsList!=null && position<eventsList.size()){
             Event event = eventsList.get(position);
+
+//            if(event.getEventDate()<)
+
             holder.eventTitleTitleView.setText(event.getEventTitle());
             holder.eventDateTitleView.setText(event.getEventDate());
             holder.eventTimeTitleView.setText(event.getEventTime());
@@ -48,11 +62,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             holder.eventTimeContentView.setText(event.getEventTime());
             holder.eventLocationContentView.setText(event.getEventLocation());
             holder.eventDescriptionContentView.setText(event.getEventDescription());
+            imageRequester.setImageFromUrl(holder.eventImage,event.getImageId());
 
-//            if(event.getImageId()!="")
-//            {
-//
-//            }
+
         }
     }
 
@@ -94,7 +106,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
 
         RelativeLayout relativeLayout;
 
-        ImageView eventImage;
+        NetworkImageView eventImage;
 
         public EventsViewHolder(@NonNull View itemView) {
             super(itemView);
