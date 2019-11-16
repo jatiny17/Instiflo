@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,6 +48,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             holder.eventTimeContentView.setText(event.getEventTime());
             holder.eventLocationContentView.setText(event.getEventLocation());
             holder.eventDescriptionContentView.setText(event.getEventDescription());
+
+//            if(event.getImageId()!="")
+//            {
+//
+//            }
         }
     }
 
@@ -88,6 +94,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
 
         RelativeLayout relativeLayout;
 
+        ImageView eventImage;
+
         public EventsViewHolder(@NonNull View itemView) {
             super(itemView);
             eventTitleTitleView = itemView.findViewById(R.id.event_title_title);
@@ -99,6 +107,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             eventLocationContentView = itemView.findViewById(R.id.event_content_location);
             eventDescriptionContentView = itemView.findViewById(R.id.event_content_description);
             relativeLayout=itemView.findViewById(R.id.detail_relative);
+            eventImage=itemView.findViewById(R.id.event_title_image);
 
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);

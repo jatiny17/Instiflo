@@ -5,14 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,10 +26,15 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Event;
 import com.rohg007.android.instiflo.utils.DateSetter;
 import com.rohg007.android.instiflo.utils.TimeSetter;
+
+import java.io.IOException;
 
 public class AddEvent extends AppCompatActivity {
 
@@ -31,6 +42,7 @@ public class AddEvent extends AppCompatActivity {
     private static final int REQUEST_CODE = 500;
     private Uri mImageUri;
     private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+    private StorageReference storageReference= FirebaseStorage.getInstance().getReference();
     ImageView browseImageView;
     private TextInputEditText event_title,event_date,event_time,event_location,event_description;
 
@@ -90,11 +102,11 @@ public class AddEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //
-                String title=event_title.getText().toString().trim();
-                String date=event_date.getText().toString().trim();
-                String time=event_time.getText().toString().trim();
-                String location=event_location.getText().toString().trim();
-                String description=event_description.getText().toString();
+                final String title=event_title.getText().toString().trim();
+                final String date=event_date.getText().toString().trim();
+                final String time=event_time.getText().toString().trim();
+                final String location=event_location.getText().toString().trim();
+                final String description=event_description.getText().toString();
 
 //                Toast.makeText(AddEvent.this, "Add Event clicked", Toast.LENGTH_SHORT).show();
 
@@ -133,23 +145,68 @@ public class AddEvent extends AppCompatActivity {
 
                 if(flag)
                 {
-                    String creator=FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    String eventId=databaseReference.push().getKey();
-                    String imageId="";
+                    if(mImageUri!=null)
+                    {
+                        final StorageReference childRef = storageReference.child(System.currentTimeMillis() + "." + GetFileExtension(mImageUri));
+                        //uploading the image
+                        UploadTask uploadTask = childRef.putFile(mImageUri);
 
-                    Event event=new Event(creator,eventId,title, date, time, location, description,imageId);
-//                    Toast.makeText(AddEvent.this, event.getEventTitle()+" "+event.getEventDate()+" "+event.getEventTime(), Toast.LENGTH_LONG).show();
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    databaseReference.child("events").child(eventId).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(AddEvent.this, "Event Added Succesfully", Toast.LENGTH_SHORT).show();
-                            } else {
+                                childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+
+                                        String creator=FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                        String eventId=databaseReference.push().getKey();
+                                        String imageId=uri.toString();
+                                        Event event=new Event(creator,eventId,title, date, time, location, description,imageId);
+
+//                                Toast.makeText(AddEvent.this, event.getEventTitle()+" "+event.getEventDate()+" "+event.getEventTime(), Toast.LENGTH_LONG).show();
+
+                                        databaseReference.child("events").child(eventId).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(AddEvent.this, "Event Added Succesfully", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(AddEvent.this, "Event Adding Failed", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
                                 Toast.makeText(AddEvent.this, "Event Adding Failed", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                    });
+                        });
+                    }
+
+                    else
+                    {
+                        String creator=FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String eventId=databaseReference.push().getKey();
+                        String imageId="";
+                        Event event=new Event(creator,eventId,title, date, time, location, description,imageId);
+
+//                                Toast.makeText(AddEvent.this, event.getEventTitle()+" "+event.getEventDate()+" "+event.getEventTime(), Toast.LENGTH_LONG).show();
+
+                        databaseReference.child("events").child(eventId).setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(AddEvent.this, "Event Added Succesfully", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(AddEvent.this, "Event Adding Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
                 }
 
             }
@@ -169,10 +226,29 @@ public class AddEvent extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode==REQUEST_CODE){
-            mImageUri = data.getData();
-            browseImageView.setImageURI(mImageUri);
+        if(resultCode==RESULT_OK && requestCode ==PICK_IMAGE_REQUEST && data!=null && data.getData()!=null)
+        {
+            mImageUri=data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
+                browseImageView.setImageBitmap(bitmap);
+            }
+            catch (IOException e) {
+                Toast.makeText(this, "Failed to load the image ,plese retry", Toast.LENGTH_SHORT).show();
+            }
         }
+
+        else
+        {
+            Toast.makeText(this, "Failed to load the image ,plese retry", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public String GetFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
+
     }
 
     @Override
