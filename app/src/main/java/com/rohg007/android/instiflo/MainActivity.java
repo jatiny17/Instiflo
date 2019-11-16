@@ -40,6 +40,7 @@ import com.rohg007.android.instiflo.ui.BuyFragment;
 import com.rohg007.android.instiflo.ui.EventsFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
 import com.rohg007.android.instiflo.ui.LoginFragment;
+import com.rohg007.android.instiflo.ui.MyProducts;
 import com.rohg007.android.instiflo.ui.ProductDetails;
 import com.rohg007.android.instiflo.ui.RentFragment;
 import com.rohg007.android.instiflo.ui.ShoppingCartFragment;
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                User tempUser = dataSnapshot.getValue(User.class);
-               email = tempUser.getEmail();
+               /*email = tempUser.getEmail();
                navEmail.setText(email);
                photoUrl = tempUser.getUserImageUrl();
 
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                        .error(R.drawable.instiflo_light)
                        .placeholder(R.mipmap.ic_launcher_round)
                        .into(headerImage);
-
+*/
                globalUser=tempUser;
            }
 
@@ -209,7 +210,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.menu_my_products:
-                Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MyProducts.class));
+                //Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_settings:
                 Toast.makeText(this,"Settings Clicked",Toast.LENGTH_SHORT).show();

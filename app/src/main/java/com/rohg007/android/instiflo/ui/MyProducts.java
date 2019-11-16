@@ -59,7 +59,7 @@ public class MyProducts extends AppCompatActivity {
                 // do something
             }
         });
-        
+        //
         RecyclerView recyclerView = findViewById(R.id.product_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new MyProductsAdapter(Product.getTestProducts()));
