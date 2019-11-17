@@ -34,6 +34,7 @@
             android:layout_marginRight="16dp"
             android:text="Rate"
             android:id="@+id/rate_button"/>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
