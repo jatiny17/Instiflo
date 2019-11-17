@@ -63,6 +63,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             holder.eventLocationContentView.setText(event.getEventLocation());
             holder.eventDescriptionContentView.setText(event.getEventDescription());
             imageRequester.setImageFromUrl(holder.eventImage,event.getImageId());
+            imageRequester.setImageFromUrl(holder.eventImage2,event.getImageId());
 
 
         }
@@ -106,7 +107,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
 
         RelativeLayout relativeLayout;
 
-        NetworkImageView eventImage;
+        NetworkImageView eventImage,eventImage2;
 
         public EventsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -120,6 +121,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             eventDescriptionContentView = itemView.findViewById(R.id.event_content_description);
             relativeLayout=itemView.findViewById(R.id.detail_relative);
             eventImage=itemView.findViewById(R.id.event_title_image);
+            eventImage2=itemView.findViewById(R.id.event_content_image);
 
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);

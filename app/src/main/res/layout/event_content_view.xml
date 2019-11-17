@@ -20,12 +20,11 @@
         android:elevation="10dp"
         app:cardCornerRadius="8dp">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/event_content_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/instiflo_dark_bg" />
+            android:scaleType="centerCrop" />
 
     </androidx.cardview.widget.CardView>
 
