@@ -1,33 +1,28 @@
 package com.rohg007.android.instiflo.adapters;
-import android.content.Context;
 
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.ViewTarget;
-import com.rohg007.android.instiflo.R;
-import com.rohg007.android.instiflo.models.Product;
-
-import java.util.HashSet;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
+import com.rohg007.android.instiflo.R;
+import com.rohg007.android.instiflo.models.Product;
 import com.squareup.picasso.Picasso;
 
-public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredProductCardAdapter.StaggeredProductViewHolder> {
+import java.util.List;
+
+public class StaggeredRentProductCardAdapter extends RecyclerView.Adapter<StaggeredRentProductCardAdapter.StaggeredProductViewHolder> {
 
     private List<Product> productList;
     private View.OnClickListener onItemClickListener;
     private Context context;
 
-    public StaggeredProductCardAdapter(List<Product> productList){
+    public StaggeredRentProductCardAdapter(List<Product> productList){
         this.productList=productList;
     }
 
@@ -53,10 +48,10 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
     public void onBindViewHolder(@NonNull StaggeredProductViewHolder holder, int position) {
         if (productList != null && position < productList.size()) {
             Product product = productList.get(position);
-            String price = "Rs. "+String.valueOf(product.getProductPrice());
+            String rentprice = "Rs. "+String.valueOf(product.getProductRentPrice());
             String url = product.getProductImageUrl();
             holder.productTitle.setText(product.getProductTitle());
-            holder.productPrice.setText(price);
+            holder.productPrice.setText(rentprice);
             //imageView.setImageBitmap(getBitmapFromURL(url));
             //Glide.with(context).load(product.getProductImageUrl()).into(holder.productimage);
             Picasso.get()

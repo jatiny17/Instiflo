@@ -58,7 +58,7 @@
             android:progressBackgroundTint="@android:color/white"
             android:rating="3.5"
             android:progressTint="@android:color/holo_orange_light"
-            style="@style/Widget.AppCompat.RatingBar.Small"></RatingBar>
+            style="@style/Widget.AppCompat.RatingBar.Small"/>
 
         <TextView
             android:id="@+id/product_detail_price"
@@ -111,6 +111,13 @@
                 android:text="Rent Duration: 6 Months"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
+            <Button
+                android:id="@+id/rate_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rate this Product"
+                android:layout_margin="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
             <Button
                 android:id="@+id/details"
                 android:layout_width="match_parent"
