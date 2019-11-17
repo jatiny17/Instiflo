@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 
 import androidx.annotation.NonNull;
@@ -53,6 +56,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             Event event = eventsList.get(position);
 
 //            if(event.getEventDate()<)
+//            Calendar calendar=Calendar.getInstance();
+//            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+//            String time=sdf.format(calendar.getTime());
+//
+//            SimpleDateFormat sdf2 = new SimpleDateFormat("dd/mm/yyyy");
+//            String date=sdf2.format(new Date());
 
             holder.eventTitleTitleView.setText(event.getEventTitle());
             holder.eventDateTitleView.setText(event.getEventDate());

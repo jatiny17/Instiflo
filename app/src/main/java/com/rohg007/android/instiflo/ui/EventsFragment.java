@@ -29,7 +29,9 @@ import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.adapters.EventsAdapter;
 import com.rohg007.android.instiflo.models.Event;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,8 +73,33 @@ public class EventsFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Event event=dataSnapshot.getValue(Event.class);
-                mEventList.add(event);
-                adapter.notifyDataSetChanged();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+                String date=sdf.format(new Date());
+
+                SimpleDateFormat sdf2=new SimpleDateFormat("hh:mm");
+                String time=sdf2.format(new Date());
+
+                Date d1,d2;
+
+                try {
+                    d1=sdf.parse(event.getEventDate());
+                    d2=sdf.parse(date);
+
+                    if(d1.after(d2)||d1.equals(d2))
+                    {
+                            mEventList.add(event);
+                            adapter.notifyDataSetChanged();
+                    }
+                }
+
+                catch (Exception e)
+                {
+                    mEventList.add(event);
+                    adapter.notifyDataSetChanged();
+                }
+
+
             }
 
             @Override
