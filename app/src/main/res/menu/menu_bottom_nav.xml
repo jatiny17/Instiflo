@@ -26,6 +26,6 @@
 
     <item
         android:id="@+id/menu_shopping_cart"
-        android:icon="@drawable/ic_shopping_cart_black_24dp"
-        android:title="Shopping Cart" />
+        android:icon="@drawable/ic_youtube_searched_for_black_24dp"
+        android:title="Lost 'N' Found" />
 </menu>

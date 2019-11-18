@@ -108,8 +108,8 @@ public class AddProduct extends AppCompatActivity {
         });
 
 
-        title=(EditText)findViewById(R.id.product_title_edt);
-        rent=(CheckBox)findViewById(R.id.rent_checkbox);
+        title=findViewById(R.id.product_title_edt);
+        rent=findViewById(R.id.rent_checkbox);
         rentDuration=(EditText)findViewById(R.id.product_rent_duration_edt);
         rentDurationLayout=(TextInputLayout)findViewById(product_duration_textinput_layout);
         rentDurationLayout.setVisibility(View.GONE);
@@ -123,20 +123,20 @@ public class AddProduct extends AppCompatActivity {
         sellPriceLayout.setVisibility(View.GONE);
         //sellprice.setVisibility(View.GONE);
         rent.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (rent.isChecked())
-                                        {
-                                            rentDurationLayout.setVisibility(View.VISIBLE);
-                                            rentPriceLayout.setVisibility(View.VISIBLE);
-                                        }
-                                        else
-                                        {
-                                            rentDurationLayout.setVisibility(View.GONE);
-                                            rentPriceLayout.setVisibility(View.GONE);
-                                        }
-                                    }
-                                });
+            @Override
+            public void onClick(View v) {
+                if (rent.isChecked())
+                {
+                    rentDurationLayout.setVisibility(View.VISIBLE);
+                    rentPriceLayout.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    rentDurationLayout.setVisibility(View.GONE);
+                    rentPriceLayout.setVisibility(View.GONE);
+                }
+            }
+        });
         buy=(CheckBox)findViewById(R.id.buy_checkbox);
         buy.setOnClickListener(new View.OnClickListener() {
             @Override

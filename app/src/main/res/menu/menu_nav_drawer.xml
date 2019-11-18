@@ -10,9 +10,9 @@
             android:title="My Events"/>
 
         <item
-            android:id="@+id/menu_my_purchases"
-            android:icon="@drawable/ic_shopping_basket_black_24dp"
-            android:title="My Purchases"/>
+            android:id="@+id/menu_approve_issues"
+            android:icon="@drawable/ic_verified_user_black_24dp"
+            android:title="Approve Issues"/>
 
         <item
             android:id="@+id/menu_my_products"
@@ -22,9 +22,9 @@
 
     <group>
         <item
-            android:id="@+id/menu_settings"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings"/>
+            android:id="@+id/menu_my_issues"
+            android:icon="@drawable/question"
+            android:title="My Issues"/>
 
         <item
             android:id="@+id/menu_about"
