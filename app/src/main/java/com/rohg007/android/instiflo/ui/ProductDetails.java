@@ -3,19 +3,26 @@ package com.rohg007.android.instiflo.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +45,8 @@ import java.security.acl.Owner;
 public class ProductDetails extends AppCompatActivity {
 
     String title;
-    int price;
+    int rentprice;
+    int sellprice;
     int noOfUsersrated;
     String ownerId;
     int rentDuration;
@@ -50,7 +58,8 @@ public class ProductDetails extends AppCompatActivity {
     String ownerEmail;
     String ownerAddress;
     String ownerContact;
-
+    float user_rating;
+    float final_rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +69,7 @@ public class ProductDetails extends AppCompatActivity {
         detailsView.setVisibility(View.GONE);
         final Intent i = getIntent();
         final String productId = i.getStringExtra("productId");
+        final String from = i.getStringExtra("from");
         FloatingActionButton floatingActionButton = findViewById(R.id.share);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,11 +79,11 @@ public class ProductDetails extends AppCompatActivity {
                 shareInfo += imageUrl;
                 shareInfo += System.getProperty("line.separator");
                 if (category == 3) {
-                    shareInfo += "Available for buying and on rent too at a price of Rs. " + price + ".";
+                    shareInfo += "Available for buying at a price of Rs. " + sellprice + "and on rent too at a price of Rs. " + rentprice + "/per day";
                 } else if (category == 1) {
-                    shareInfo += "Available for buying at a price of Rs. " + price + ".";
+                    shareInfo += "Available for buying at a price of Rs. " + sellprice + ".";
                 } else if (category == 2) {
-                    shareInfo += "Available on rent too at a price of Rs. " + price + ".";
+                    shareInfo += "Available on rent at a price of Rs. " + rentprice + "/per day";
                 }
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
@@ -84,6 +94,65 @@ public class ProductDetails extends AppCompatActivity {
 
             }
         });
+
+        Button rateProduct = (Button)findViewById(R.id.rate_product);
+        rateProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater layoutInflater = (LayoutInflater) ProductDetails.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View customView = layoutInflater.inflate(R.layout.rate_product,null);
+                //instantiate popup window
+                final PopupWindow popupWindow = new PopupWindow(customView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                //display the popup window
+                ConstraintLayout constraintLayout = (ConstraintLayout)findViewById(R.id.constraint_layout);
+                popupWindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
+                popupWindow.setBackgroundDrawable(null);
+                View container = popupWindow.getContentView().getRootView();
+                if(container != null) {
+                    WindowManager wm = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+                    WindowManager.LayoutParams p = (WindowManager.LayoutParams)container.getLayoutParams();
+                    p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+                    p.dimAmount = 0.3f;
+                    if(wm != null) {
+                        wm.updateViewLayout(container, p);
+                    }
+                }
+                //close the popup window on button click
+                RatingBar ratingBar = (RatingBar) findViewById(R.id.rate_bar);
+                Button rate = (Button) customView.findViewById(R.id.rate_button);
+                rate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RatingBar ratingBar = (RatingBar)findViewById(R.id.rating_bar);
+                        rating = ratingBar.getRating();
+                        RatingBar rateBar = ((RatingBar)popupWindow.getContentView().findViewById(R.id.rate_bar));
+                        user_rating=rateBar.getRating();
+                        if(user_rating>0)
+                        {
+                            final_rating = ((rating * noOfUsersrated) + user_rating)/(noOfUsersrated + 1);
+                            noOfUsersrated++;
+                        }
+                        else
+                        {
+                            final_rating = rating;
+                        }
+                        try {
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                            ref.child("products").child(productId).child("productRating").setValue(final_rating);
+                            ref.child("products").child(productId).child("noOfUsersRated").setValue(noOfUsersrated);
+                            ratingBar.setRating(final_rating);
+                            TextView ratingView = (TextView)findViewById(R.id.product_detail_rating);
+                            ratingView.setText(String.format("%.1f", final_rating));
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        popupWindow.dismiss();
+                    }
+                });
+            }});
         final Button vendorDetailsButton = (Button)findViewById(R.id.details);
         vendorDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +206,7 @@ public class ProductDetails extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { seeMap(); }});
+
         FirebaseDatabase.getInstance().getReference().child("products").child(productId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -144,7 +214,8 @@ public class ProductDetails extends AppCompatActivity {
 
                         Product product = dataSnapshot.getValue(Product.class);
                         title = product.getProductTitle();
-                        price = product.getProductPrice();
+                        rentprice = product.getProductRentPrice();
+                        sellprice = product.getProductSellPrice();
                         noOfUsersrated = product.getNoOfUsersRated();
                         ownerId = product.getOwnerId();
                         rentDuration = product.getRentDuration();
@@ -166,11 +237,50 @@ public class ProductDetails extends AppCompatActivity {
                                 .load(imageUrl)
                                 .into(imageView);
                         titleView.setText(title);
-                        ratingView.setText(rating+"");
-                        priceView.setText("Rs. "+price);
-                        descriptionview.setText(description);
                         rateBar.setRating(rating);
-                        if(rentDuration<=1)
+                        ratingView.setText(String.format("%.1f",rating));
+                       /*rateBar.setVisibility(View.GONE);
+                       ratingView.setVisibility(View.GONE);*/
+                        if(from.equals("buyFragment"))
+                        {
+                            priceView.setText("Rs. "+sellprice);
+                            if(category==3)
+                            {
+                                description+= System.getProperty("line.separator");
+                                description+= "Available on rent too at a price of Rs. " + rentprice + "/Day.";
+                                description+= System.getProperty("line.separator");
+                                if(rentDuration==1)
+                                    description+= "Rent Duration: "+rentDuration+" day";
+                                else
+                                    description+= "Rent Duration: "+rentDuration+" days";
+
+                            }
+                        }
+                        else
+                        {
+                            priceView.setText("Rs. "+rentprice +"/Day" );
+                            if(category==3)
+                            {
+                                description+= System.getProperty("line.separator");
+                                description+= "Available for buying too at a price of Rs. " + sellprice ;
+                                description+= System.getProperty("line.separator");
+                                if(rentDuration==1)
+                                    description+= "Rent Duration: "+rentDuration+" day";
+                                else
+                                    description+= "Rent Duration: "+rentDuration+" days";
+                            }
+                            else
+                            {
+                                description+= System.getProperty("line.separator");
+                                if(rentDuration==1)
+                                    description+= "Rent Duration: "+rentDuration+" day";
+                                else
+                                    description+= "Rent Duration: "+rentDuration+" days";
+                            }
+                        }
+                        descriptionview.setText(description);
+
+                        /*if(rentDuration<=1)
                             durationView.setText("Rent Duration: "+rentDuration+" day");
                         else
                             durationView.setText("Rent Duration: "+rentDuration+" days");
@@ -182,7 +292,8 @@ public class ProductDetails extends AppCompatActivity {
                         else
                         {
                             durationView.setVisibility(View.GONE);
-                        }
+                        }*/
+                        durationView.setVisibility(View.GONE);
                         FirebaseDatabase.getInstance().getReference().child("users").child(ownerId)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -204,6 +315,7 @@ public class ProductDetails extends AppCompatActivity {
                     }
                 });
     }
+
     void sendmail()
     {
         try {
