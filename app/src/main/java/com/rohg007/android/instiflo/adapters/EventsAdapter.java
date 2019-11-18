@@ -73,8 +73,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             holder.eventDescriptionContentView.setText(event.getEventDescription());
             imageRequester.setImageFromUrl(holder.eventImage,event.getImageId());
             imageRequester.setImageFromUrl(holder.eventImage2,event.getImageId());
-
-
         }
     }
 
