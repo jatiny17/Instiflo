@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ramotion.foldingcell.FoldingCell;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Event;
@@ -29,6 +35,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsViewHolder> {
@@ -37,6 +44,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
     private View.OnClickListener onItemClickListener;
     private HashSet<Integer> unfoldedIndexes = new HashSet<>();
     private ImageRequester imageRequester;
+    private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
 
     public EventsAdapter(ArrayList<Event> eventsList){
         this.eventsList = eventsList;
@@ -55,14 +63,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
         if(eventsList!=null && position<eventsList.size()){
             Event event = eventsList.get(position);
 
-//            if(event.getEventDate()<)
-//            Calendar calendar=Calendar.getInstance();
-//            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-//            String time=sdf.format(calendar.getTime());
-//
-//            SimpleDateFormat sdf2 = new SimpleDateFormat("dd/mm/yyyy");
-//            String date=sdf2.format(new Date());
-
             holder.eventTitleTitleView.setText(event.getEventTitle());
             holder.eventDateTitleView.setText(event.getEventDate());
             holder.eventTimeTitleView.setText(event.getEventTime());
@@ -74,7 +74,54 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             imageRequester.setImageFromUrl(holder.eventImage,event.getImageId());
             imageRequester.setImageFromUrl(holder.eventImage2,event.getImageId());
 
+            holder.going_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    event.increment_going();
+                    String id=event.getEventId();
+                    databaseReference.child("events").child(id).setValue(event);
 
+                    try{
+
+                        Calendar cal=Calendar.getInstance();
+
+                        String date=event.getEventDate();
+
+                        String d=date.substring(0,2);
+                        String m=date.substring(3,5);
+                        String y=date.substring(6);
+
+                        String time=event.getEventTime();
+
+                        String h=time.substring(0,2);
+                        String min=time.substring(3,5);
+                        String s="00";
+
+                        cal.set(Integer.parseInt(y),Integer.parseInt(m)-1,Integer.parseInt(d),Integer.parseInt(h),Integer.parseInt(min),Integer.parseInt(s));
+
+                        Intent calIntent = new Intent(Intent.ACTION_INSERT);
+                        calIntent.setData(CalendarContract.Events.CONTENT_URI);
+
+                        calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, cal.getTimeInMillis());
+                        calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, cal.getTimeInMillis()+60*60*1000);
+
+                        calIntent.putExtra(CalendarContract.Events.TITLE, event.getEventTitle());
+                        calIntent.putExtra(CalendarContract.Events.DESCRIPTION, event.getEventDescription());
+                        calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, event.getEventLocation());
+
+                        view.getContext().startActivity(calIntent);
+                    }
+
+                    catch (Exception e)
+                    {
+                        ;
+                    }
+
+                    Toast.makeText(view.getContext(), "Remainder for the event saved!!", Toast.LENGTH_SHORT).show();
+
+                    holder.going_button.setVisibility(View.GONE);
+                    }
+            });
         }
     }
 
@@ -118,6 +165,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
 
         NetworkImageView eventImage,eventImage2;
 
+        MaterialButton going_button;
+
         public EventsViewHolder(@NonNull View itemView) {
             super(itemView);
             eventTitleTitleView = itemView.findViewById(R.id.event_title_title);
@@ -131,6 +180,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             relativeLayout=itemView.findViewById(R.id.detail_relative);
             eventImage=itemView.findViewById(R.id.event_title_image);
             eventImage2=itemView.findViewById(R.id.event_content_image);
+            going_button=itemView.findViewById(R.id.event_content_going_button);
+
 
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);

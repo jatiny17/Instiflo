@@ -12,6 +12,7 @@ public class Event {
     private String eventOwner;
     private String eventId;
     private String imageId;
+    private Integer count;
 
     public Event() {
         this.eventTitle = "";
@@ -22,6 +23,7 @@ public class Event {
         this.eventOwner="";
         this.eventId="";
         this.imageId="";
+        this.count=0;
     }
 
     public Event(String eventOwner,String eventId,String eventTitle, String eventDate, String eventTime, String eventLocation, String eventDescription,String imageId) {
@@ -33,6 +35,7 @@ public class Event {
         this.eventId=eventId;
         this.eventOwner=eventOwner;
         this.imageId=imageId;
+        this.count=0;
     }
 
     public String getEventTitle() {
@@ -71,9 +74,7 @@ public class Event {
         return eventDescription;
     }
 
-    public void setEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
-    }
+    public void setEventDescription(String eventDescription) { this.eventDescription = eventDescription; }
 
     public void setEventOwner(String eventOwner)
     {
@@ -100,6 +101,10 @@ public class Event {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
+
+    public Integer getCount() { return count; }
+
+    public void increment_going(){count++;}
 
     //    public static ArrayList<Event> getTestEvents(){
 //        ArrayList<Event> eventArrayList = new ArrayList<>();

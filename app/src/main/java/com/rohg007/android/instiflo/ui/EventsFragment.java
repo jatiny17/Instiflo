@@ -49,6 +49,8 @@ public class EventsFragment extends Fragment {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             ((FoldingCell) v).toggle(false);
             adapter.registerToggle(viewHolder.getAdapterPosition());
+
+
         }
     };
 

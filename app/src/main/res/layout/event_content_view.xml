@@ -109,6 +109,7 @@
         android:layout_height="wrap_content"
         android:text="Going"
         style="@style/Widget.Instiflo.Button.OutlinedButton"
+        android:id="@+id/event_content_going_button"
         android:layout_marginHorizontal="8dp"/>
 
     <View
