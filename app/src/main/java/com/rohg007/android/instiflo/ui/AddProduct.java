@@ -345,9 +345,9 @@ public class AddProduct extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rentDuration.setVisibility(View.GONE);
-                rentprice.setVisibility(View.GONE);
-                sellprice.setVisibility(View.GONE);
+                rentDurationLayout.setVisibility(View.GONE);
+                rentPriceLayout.setVisibility(View.GONE);
+                sellPriceLayout.setVisibility(View.GONE);
                 browseImageView.setImageResource(0);
                 title.getText().clear();
                 rentDuration.getText().clear();

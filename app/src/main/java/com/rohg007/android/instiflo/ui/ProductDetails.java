@@ -79,11 +79,11 @@ public class ProductDetails extends AppCompatActivity {
                 shareInfo += imageUrl;
                 shareInfo += System.getProperty("line.separator");
                 if (category == 3) {
-                    shareInfo += "Available for buying at a price of Rs. " + sellprice + "and on rent too at a price of Rs. " + rentprice + "/per day";
+                    shareInfo += "Available for buying at a price of Rs. " + sellprice + " and on rent too at a price of Rs. " + rentprice + "/day.";
                 } else if (category == 1) {
                     shareInfo += "Available for buying at a price of Rs. " + sellprice + ".";
                 } else if (category == 2) {
-                    shareInfo += "Available on rent at a price of Rs. " + rentprice + "/per day";
+                    shareInfo += "Available on rent at a price of Rs. " + rentprice + "/day.";
                 }
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
@@ -321,7 +321,7 @@ public class ProductDetails extends AppCompatActivity {
         try {
             Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + ownerEmail));
             intent.putExtra(Intent.EXTRA_SUBJECT, "Getting information about your product on Instiflow.");
-            intent.putExtra(Intent.EXTRA_TEXT, "hello." + System.getProperty("line.separator")+"Interested in buying you product " + title + System.getProperty("line.separator") + imageUrl + System.getProperty("line.separator") + "Kindle send some more information about this product :-)" + System.getProperty("line.separator")+"Thank You.");
+            intent.putExtra(Intent.EXTRA_TEXT, "Hello." + System.getProperty("line.separator")+"Interested in buying you product '" + title + "'" + System.getProperty("line.separator") + imageUrl + System.getProperty("line.separator") + "Kindly send some more information about this product :-)" + System.getProperty("line.separator")+ System.getProperty("line.separator")+"Thank You.");
             startActivity(intent);
         } catch(Exception e) {
             Toast.makeText(ProductDetails.this, "Sorry...You don't have any mail app", Toast.LENGTH_SHORT).show();
