@@ -142,8 +142,8 @@ public class Product {
         return noOfUsersRated;
     }
 
-    public void setNoOfUsersRated(int noOfUSersRated) {
-        this.noOfUsersRated = noOfUSersRated;
+    public void setNoOfUsersRated(int noOfUsersRated) {
+        this.noOfUsersRated = noOfUsersRated;
     }
 
     public int getProductCount() {
@@ -153,5 +153,4 @@ public class Product {
     public void setProductCount(int productCount) {
         this.productCount = productCount;
     }
-
 }

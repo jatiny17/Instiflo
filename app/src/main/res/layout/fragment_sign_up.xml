@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             style="@style/Widget.Instiflo.TextInputLayout"
             android:layout_margin="4dp"
-            android:hint="@string/login_username_hint"
+            android:hint="Username"
             app:errorEnabled="true"
             android:id="@+id/signup_username_text_layout">
 

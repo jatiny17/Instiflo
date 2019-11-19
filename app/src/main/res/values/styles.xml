@@ -14,7 +14,8 @@
     </style>
 
     <style name="Widget.Instiflo.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="hintTextAppearance">@style/TextAppearance.Instiflo.TextInputLayout.HintText</item>
+        <item name="hintTextAppearance">@style/TextAppearance.Instiflo.TextInputLayout.HintText
+        </item>
         <item name="hintTextColor">@color/textColorPrimary</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="boxStrokeColor">@color/colorAccent</item>
@@ -44,12 +45,22 @@
     <style name="Widget.Instiflo.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="strokeColor">@color/colorPrimary</item>
-        <item name="strokeWidth">2dp</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
     <style name="ToobarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:colorControlNormal">@color/textColorPrimary</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Instiflo.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Instiflo.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Instiflo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

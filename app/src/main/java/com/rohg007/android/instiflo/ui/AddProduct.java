@@ -314,7 +314,7 @@ public class AddProduct extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(AddProduct.this, "Product Added Succesfully", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddProduct.this, "Product Added Successfully", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(AddProduct.this,MainActivity.class);
                                                 startActivity(intent);
                                             } else {
