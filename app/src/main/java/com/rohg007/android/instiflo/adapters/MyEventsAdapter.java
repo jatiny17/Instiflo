@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Event;
 import com.rohg007.android.instiflo.models.Product;
+import com.rohg007.android.instiflo.ui.EventDetails;
 import com.rohg007.android.instiflo.ui.ProductDetails;
 import com.squareup.picasso.Picasso;
 
@@ -30,7 +31,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsViewHolder> {
     @NonNull
     @Override
     public MyEventsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_products_view,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_events_view,parent,false);
         return new MyEventsViewHolder(v);
     }
 
@@ -38,32 +39,30 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsViewHolder> {
     public void onBindViewHolder(@NonNull MyEventsViewHolder holder, final int position){
         final Event event = eventArrayList.get(position);
         String title = event.getEventTitle();
-        //String imageUrl = event.getProductImageUrl();
-    /*    if(event.getProductSellPrice()!= 0) {
-            String price = "Selling price - Rs. " + event.getProductSellPrice();
-            holder.sellPriceTextView.setText(price);
+        String imageUrl = event.getImageId();
+        if(event.getEventDate()!= "0") {
+            holder.dateTextView.setText(event.getEventDate());
         }
-        if(event.getProductRentPrice()!= 0) {
-            String price = "Rent price - Rs. " + event.getProductRentPrice() +"/day";
-            holder.rentPriceTextView.setText(price);
+        if(event.getEventTime()!= "0") {
+            holder.timeTextView.setText(event.getEventTime());
         }
 
-     */
-        /*if(imageUrl!=null) {
+
+        if(imageUrl!=null) {
             Picasso.get()
                     .load(imageUrl)
                     .into(holder.eventImageView);
-        }*/
+        }
         holder.titleTextView.setText(title);
-        /*holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             Event event = eventArrayList.get(position);
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, ProductDetails.class);
-                intent.putExtra("productId",event.getProductId());
+                Intent intent = new Intent(mContext, EventDetails.class);
+                intent.putExtra("eventId",event.getEventId());
                 mContext.startActivity(intent);
             }
-        });*/
+        });
     }
 
 

@@ -60,6 +60,12 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsViewHolder
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ProductDetails.class);
                     intent.putExtra("productId",product.getProductId());
+                    if(product.getProductSellPrice()!= 0) {
+                        intent.putExtra("from", "buyFragment");
+                    }
+                    else if(product.getProductRentPrice()!= 0) {
+                        intent.putExtra("from", "rentFragment");
+                    }
                     mContext.startActivity(intent);
                 }
             });

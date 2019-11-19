@@ -198,14 +198,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id){
             case R.id.menu_my_events:
-                Toast.makeText(this,"My Events Clicked",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this,com.rohg007.android.instiflo.ui.MyEvents.class));
                 break;
             case R.id.menu_approve_issues:
                 Intent intent = new Intent(MainActivity.this, ApproveIssue.class);
                 startActivity(intent);
                 break;
             case R.id.menu_my_products:
-                Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this,com.rohg007.android.instiflo.ui.MyProducts.class));
                 break;
             case R.id.menu_my_issues:
                 Intent i = new Intent(MainActivity.this, MyIssues.class);

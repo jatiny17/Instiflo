@@ -16,7 +16,8 @@
         android:roundIcon="@drawable/instiflo_dark"
         android:supportsRtl="true"
         android:theme="@style/Theme.Instiflo">
-        <activity android:name=".ui.MyEvents"></activity>
+        <activity android:name=".ui.EventDetails"></activity>
+        <activity android:name=".ui.MyEvents" />
         <activity android:name=".ui.UserDetailsActivity" />
         <activity android:name=".ui.AddProduct" />
         <activity android:name=".ui.AddEvent" />
