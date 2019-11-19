@@ -1,7 +1,6 @@
 package com.rohg007.android.instiflo.adapters;
 import android.content.Context;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Product;
 
-import java.util.HashSet;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -21,14 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rohg007.android.instiflo.utils.ImageRequester;
 import com.squareup.picasso.Picasso;
 
-public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredProductCardAdapter.StaggeredProductViewHolder> {
+public class StaggeredSellProductCardAdapter extends RecyclerView.Adapter<StaggeredSellProductCardAdapter.StaggeredProductViewHolder> {
 
     private List<Product> productList;
     private View.OnClickListener onItemClickListener;
     private Context context;
     private ImageRequester imageRequester;
 
-    public StaggeredProductCardAdapter(List<Product> productList){
+    public StaggeredSellProductCardAdapter(List<Product> productList){
         this.productList=productList;
         imageRequester = ImageRequester.getInstance();
     }
@@ -55,10 +53,10 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
     public void onBindViewHolder(@NonNull StaggeredProductViewHolder holder, int position) {
         if (productList != null && position < productList.size()) {
             Product product = productList.get(position);
-            String price = "Rs. "+String.valueOf(product.getProductSellPrice());
+            String sellprice = "Rs. "+String.valueOf(product.getProductSellPrice());
             String url = product.getProductImageUrl();
             holder.productTitle.setText(product.getProductTitle());
-            holder.productPrice.setText(price);
+            holder.productPrice.setText(sellprice);
             //imageView.setImageBitmap(getBitmapFromURL(url));
             //Glide.with(context).load(product.getProductImageUrl()).into(holder.productimage);
             imageRequester.setImageFromUrl(holder.productimage,url);
@@ -81,8 +79,8 @@ public class StaggeredProductCardAdapter extends RecyclerView.Adapter<StaggeredP
         NetworkImageView productimage;
         StaggeredProductViewHolder(@NonNull View itemView){
             super(itemView);
-            productTitle = (TextView)itemView.findViewById(R.id.product_title);
-            productPrice = (TextView)itemView.findViewById(R.id.product_price);
+            productTitle = itemView.findViewById(R.id.product_title);
+            productPrice = itemView.findViewById(R.id.product_price);
             productimage = itemView.findViewById(R.id.product_image);
             itemView.setTag(this);
             itemView.setOnClickListener(onItemClickListener);

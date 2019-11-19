@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,11 +37,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rohg007.android.instiflo.adapters.CartAdapter;
 import com.rohg007.android.instiflo.models.User;
+import com.rohg007.android.instiflo.ui.ApproveIssue;
 import com.rohg007.android.instiflo.ui.BuyFragment;
 import com.rohg007.android.instiflo.ui.EventsFragment;
+import com.rohg007.android.instiflo.ui.IssueFragment;
 import com.rohg007.android.instiflo.ui.LoginActivity;
 import com.rohg007.android.instiflo.ui.LoginFragment;
-import com.rohg007.android.instiflo.ui.MyProducts;
+import com.rohg007.android.instiflo.ui.MyIssues;
 import com.rohg007.android.instiflo.ui.ProductDetails;
 import com.rohg007.android.instiflo.ui.RentFragment;
 import com.rohg007.android.instiflo.ui.ShoppingCartFragment;
@@ -129,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         getSupportFragmentManager().beginTransaction().replace(R.id.container_main,new RentFragment()).commit();
                         break;
                     case R.id.menu_shopping_cart:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container_main, new ShoppingCartFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container_main, new IssueFragment()).commit();
                         break;
                 }
                 return true;
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                User tempUser = dataSnapshot.getValue(User.class);
-               /*email = tempUser.getEmail();
+               email = tempUser.getEmail();
                navEmail.setText(email);
                photoUrl = tempUser.getUserImageUrl();
 
@@ -172,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                        .error(R.drawable.instiflo_light)
                        .placeholder(R.mipmap.ic_launcher_round)
                        .into(headerImage);
-*/
+
                globalUser=tempUser;
            }
 
@@ -181,14 +184,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                Log.e(LOG_TAG,"Cannot retrieve user details");
            }
        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else
-            super.onBackPressed();
     }
 
     @Override
@@ -205,16 +200,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_my_events:
                 Toast.makeText(this,"My Events Clicked",Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.menu_my_purchases:
-                Intent intent = new Intent(MainActivity.this, ProductDetails.class);
+            case R.id.menu_approve_issues:
+                Intent intent = new Intent(MainActivity.this, ApproveIssue.class);
                 startActivity(intent);
                 break;
             case R.id.menu_my_products:
-                startActivity(new Intent(this,com.rohg007.android.instiflo.ui.MyProducts.class));
-                //Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.menu_settings:
-                Toast.makeText(this,"Settings Clicked",Toast.LENGTH_SHORT).show();
+            case R.id.menu_my_issues:
+                Intent i = new Intent(MainActivity.this, MyIssues.class);
+                startActivity(i);
                 break;
             case R.id.menu_about:
                 Toast.makeText(this,"About Us Clicked",Toast.LENGTH_SHORT).show();
@@ -231,5 +226,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
         startActivity(intent);
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else
+            super.onBackPressed();
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }

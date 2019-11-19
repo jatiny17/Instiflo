@@ -19,7 +19,6 @@ public class Product {
     private float productRating;
     private int noOfUsersRated;
 
-
     public Product()
     {
         this.productTitle = "";

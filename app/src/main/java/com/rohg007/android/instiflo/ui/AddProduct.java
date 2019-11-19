@@ -108,8 +108,8 @@ public class AddProduct extends AppCompatActivity {
         });
 
 
-        title=(EditText)findViewById(R.id.product_title_edt);
-        rent=(CheckBox)findViewById(R.id.rent_checkbox);
+        title=findViewById(R.id.product_title_edt);
+        rent=findViewById(R.id.rent_checkbox);
         rentDuration=(EditText)findViewById(R.id.product_rent_duration_edt);
         rentDurationLayout=(TextInputLayout)findViewById(product_duration_textinput_layout);
         rentDurationLayout.setVisibility(View.GONE);
