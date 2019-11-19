@@ -344,7 +344,6 @@ public class ProductDetails extends AppCompatActivity {
             Intent sendIntent = new Intent("android.intent.action.MAIN");
             sendIntent.setComponent(new ComponentName("com.whatsapp","com.whatsapp.Conversation"));
             sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(ownerContact)+"@s.whatsapp.net");
-            // getApplication().startActivity(sendIntent);
 
             startActivity(Intent.createChooser(sendIntent, "Compartir en")
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
