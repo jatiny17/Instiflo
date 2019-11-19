@@ -37,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rohg007.android.instiflo.adapters.CartAdapter;
 import com.rohg007.android.instiflo.models.User;
+import com.rohg007.android.instiflo.ui.AboutUs;
 import com.rohg007.android.instiflo.ui.ApproveIssue;
 import com.rohg007.android.instiflo.ui.BuyFragment;
 import com.rohg007.android.instiflo.ui.EventsFragment;
@@ -212,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(i);
                 break;
             case R.id.menu_about:
-                Toast.makeText(this,"About Us Clicked",Toast.LENGTH_SHORT).show();
+                Intent i1 = new Intent(MainActivity.this, AboutUs.class);
+                startActivity(i1);
                 break;
             case R.id.logout:
                 logOut();
