@@ -17,6 +17,7 @@ public class MyEventsViewHolder extends RecyclerView.ViewHolder {
     TextView dateTextView;
     TextView timeTextView;
     ImageView eventImageView;
+    TextView peopleGoingView;
 
     public MyEventsViewHolder(@NonNull final View itemView) {
         super(itemView);
@@ -25,5 +26,7 @@ public class MyEventsViewHolder extends RecyclerView.ViewHolder {
         timeTextView = itemView.findViewById(R.id.my_events_title_time);
         eventImageView = itemView.findViewById(R.id.event_title_image);
         parentLayout = itemView.findViewById(R.id.my_event_id);
+        peopleGoingView = itemView.findViewById(R.id.count_people_going);
+
     }
 }

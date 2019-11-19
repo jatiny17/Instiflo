@@ -2,6 +2,7 @@ package com.rohg007.android.instiflo.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,9 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsViewHolder> {
         final Event event = eventArrayList.get(position);
         String title = event.getEventTitle();
         String imageUrl = event.getImageId();
+        int count = event.getCount();
+        String pCount = String.valueOf(count);
+        Log.i("testing",pCount);
         if(event.getEventDate()!= "0") {
             holder.dateTextView.setText(event.getEventDate());
         }
@@ -54,6 +58,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsViewHolder> {
                     .into(holder.eventImageView);
         }
         holder.titleTextView.setText(title);
+        holder.peopleGoingView.setText(pCount);
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             Event event = eventArrayList.get(position);
             @Override

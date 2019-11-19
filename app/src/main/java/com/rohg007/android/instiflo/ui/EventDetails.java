@@ -96,7 +96,7 @@ public class EventDetails extends AppCompatActivity {
                         if(pplGoing == 0)
                             pplGoingView.setText("People attending: 0");
                         else
-                            pplGoingView.setText(pplGoing);
+                            pplGoingView.setText("People attending: "+pplGoing);
                         dateView.setText("Date: "+date);
                         timeView.setText("Time: "+time);
                         descriptionview.setText(description);
