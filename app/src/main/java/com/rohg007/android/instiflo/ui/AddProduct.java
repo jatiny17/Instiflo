@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Layout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,13 +45,21 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import static com.rohg007.android.instiflo.R.id.product_duration_textinput_layout;
+import static com.rohg007.android.instiflo.R.id.product_rent_price_textinput_layout;
+import static com.rohg007.android.instiflo.R.id.product_sell_price_textinput_layout;
+
 public class AddProduct extends AppCompatActivity {
 
     EditText title;
     CheckBox rent;
     CheckBox buy;
+    TextInputLayout rentDurationLayout;
+    TextInputLayout rentPriceLayout;
+    TextInputLayout sellPriceLayout;
     EditText rentDuration;
-    EditText price;
+    EditText rentprice;
+    EditText sellprice;
     EditText units;
     EditText description;
     Button clear;
@@ -101,19 +111,46 @@ public class AddProduct extends AppCompatActivity {
         title=(EditText)findViewById(R.id.product_title_edt);
         rent=(CheckBox)findViewById(R.id.rent_checkbox);
         rentDuration=(EditText)findViewById(R.id.product_rent_duration_edt);
-        rentDuration.setVisibility(View.GONE);
+        rentDurationLayout=(TextInputLayout)findViewById(product_duration_textinput_layout);
+        rentDurationLayout.setVisibility(View.GONE);
+        //rentDuration.setVisibility(View.GONE);
+        rentprice=(EditText)findViewById(R.id.product_rent_price_edt);
+        rentPriceLayout=(TextInputLayout)findViewById(product_rent_price_textinput_layout);
+        rentPriceLayout.setVisibility(View.GONE);
+        //rentprice.setVisibility(View.GONE);
+        sellprice=(EditText)findViewById(R.id.product_sell_price_edt);
+        sellPriceLayout=(TextInputLayout)findViewById(product_sell_price_textinput_layout);
+        sellPriceLayout.setVisibility(View.GONE);
+        //sellprice.setVisibility(View.GONE);
         rent.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (rent.isChecked())
-                                            rentDuration.setVisibility(View.VISIBLE);
-                                        else
-                                            rentDuration.setVisibility(View.GONE);
-                                    }
-                                });
-
+            @Override
+            public void onClick(View v) {
+                if (rent.isChecked())
+                {
+                    rentDurationLayout.setVisibility(View.VISIBLE);
+                    rentPriceLayout.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    rentDurationLayout.setVisibility(View.GONE);
+                    rentPriceLayout.setVisibility(View.GONE);
+                }
+            }
+        });
         buy=(CheckBox)findViewById(R.id.buy_checkbox);
-        price=(EditText)findViewById(R.id.product_price_edt);
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buy.isChecked())
+                {
+                    sellPriceLayout.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    sellPriceLayout.setVisibility(View.GONE);
+                }
+            }
+        });
         units=(EditText)findViewById(R.id.product_unit_edt);
         description=(EditText)findViewById(R.id.product_description_edt);
         add=(Button)findViewById(R.id.add_product_button);
@@ -133,40 +170,108 @@ public class AddProduct extends AppCompatActivity {
                     return;
                 }
                 final int productCategory;
-                final int productrentDuration;
+                final int productrentDuration,productSellPrice,productRentPrice;
                 if(buy.isChecked() && rent.isChecked())
                 {
                     productCategory=3;
-                    productrentDuration=Integer.parseInt(rentDuration.getText().toString());
+                    String s=rentprice.getText().toString();
+                    if(s.equals(""))
+                    {
+                        Toast.makeText(AddProduct.this, "Enter price for your product", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    productRentPrice=Integer.parseInt(s);
+                    if(productRentPrice<0)
+                    {
+                        Toast.makeText(AddProduct.this, "Enter valid price", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    s=sellprice.getText().toString();
+                    if(s.equals(""))
+                    {
+                        Toast.makeText(AddProduct.this, "Enter price for your product", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    productSellPrice=Integer.parseInt(s);
+                    if(productSellPrice<0)
+                    {
+                        Toast.makeText(AddProduct.this, "Enter valid price", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    s=rentDuration.getText().toString();
+                    if(s.equals(""))
+                    {
+                        Toast.makeText(AddProduct.this, "Enter rent duration (in days) for your product", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    productrentDuration=Integer.parseInt(s);
+                    if(productrentDuration<0)
+                    {
+                        Toast.makeText(AddProduct.this, "Enter valid rent duration", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 else if(buy.isChecked())
                 {
                     productCategory=1;
                     productrentDuration=0;
+                    productRentPrice=0;
+                    String s=sellprice.getText().toString();
+                    if(s.equals(""))
+                    {
+                        Toast.makeText(AddProduct.this, "Enter price for your product", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    productSellPrice=Integer.parseInt(s);
+                    if(productSellPrice<0)
+                    {
+                        Toast.makeText(AddProduct.this, "Enter valid price", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 else if(rent.isChecked())
                 {
                     productCategory=2;
-                    productrentDuration=Integer.parseInt(rentDuration.getText().toString());
+                    productSellPrice=0;
+                    String s=rentprice.getText().toString();
+                    if(s.equals(""))
+                    {
+                        Toast.makeText(AddProduct.this, "Enter price for your product", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    productRentPrice=Integer.parseInt(s);
+                    if(productRentPrice<0) {
+                        Toast.makeText(AddProduct.this, "Enter valid price", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    s=rentDuration.getText().toString();
+                    if(s.equals(""))
+                    {
+                        Toast.makeText(AddProduct.this, "Enter rent duration (in days) for your product", Toast.LENGTH_SHORT).show();
+                        return;
+
+                    }
+                    productrentDuration=Integer.parseInt(s);
+                    if(productrentDuration<0)
+                    {
+                        Toast.makeText(AddProduct.this, "Enter valid rent duration", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                 }
                 else
                 {
                     Toast.makeText(AddProduct.this, "Check atleast one check box", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String s=price.getText().toString();
-                if(s.equals(""))
-                {
-                    Toast.makeText(AddProduct.this, "Enter valid price", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                final int productPrice=Integer.parseInt(s);
-                if(productPrice<0)
-                {
-                    Toast.makeText(AddProduct.this, "Enter price for your product", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                s=units.getText().toString();
+                String s=units.getText().toString();
                 if(s.equals(""))
                 {
                     {
@@ -204,12 +309,12 @@ public class AddProduct extends AppCompatActivity {
                                     productImgeUrl=uri.toString();
                                     String ownerId=FirebaseAuth.getInstance().getCurrentUser().getUid();
                                     String productId=databaseReference.push().getKey();
-                                    Product product=new Product(productId,ownerId,productTitle,productCategory,productrentDuration,productPrice,productCount,productDescription,productImgeUrl);
+                                    Product product=new Product(productId,ownerId,productTitle,productCategory,productrentDuration,productRentPrice,productSellPrice,productCount,productDescription,productImgeUrl);
                                     databaseReference.child("products").child(productId).setValue(product).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(AddProduct.this, "Product Added Succesfully", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddProduct.this, "Product Added Successfully", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(AddProduct.this,MainActivity.class);
                                                 startActivity(intent);
                                             } else {
@@ -241,11 +346,15 @@ public class AddProduct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 rentDuration.setVisibility(View.GONE);
+                rentprice.setVisibility(View.GONE);
+                sellprice.setVisibility(View.GONE);
                 browseImageView.setImageResource(0);
                 title.getText().clear();
+                rentDuration.getText().clear();
+                sellprice.getText().clear();
+                rentprice.getText().clear();
                 buy.setChecked(false);
                 rent.setChecked(false);
-                price.getText().clear();
                 units.getText().clear();
                 description.getText().clear();
 

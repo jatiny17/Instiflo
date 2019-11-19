@@ -38,7 +38,8 @@ import java.security.acl.Owner;
 public class ProductDetails extends AppCompatActivity {
 
     String title;
-    int price;
+    int rentprice;
+    int sellprice;
     int noOfUsersrated;
     String ownerId;
     int rentDuration;
@@ -60,6 +61,7 @@ public class ProductDetails extends AppCompatActivity {
         detailsView.setVisibility(View.GONE);
         final Intent i = getIntent();
         final String productId = i.getStringExtra("productId");
+        final String from = i.getStringExtra("from");
         FloatingActionButton floatingActionButton = findViewById(R.id.share);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,11 +71,11 @@ public class ProductDetails extends AppCompatActivity {
                 shareInfo += imageUrl;
                 shareInfo += System.getProperty("line.separator");
                 if (category == 3) {
-                    shareInfo += "Available for buying and on rent too at a price of Rs. " + price + ".";
+                    shareInfo += "Available for buying at a price of Rs. " + sellprice + "and on rent too at a price of Rs. " + rentprice + "/per day";
                 } else if (category == 1) {
-                    shareInfo += "Available for buying at a price of Rs. " + price + ".";
+                    shareInfo += "Available for buying at a price of Rs. " + sellprice + ".";
                 } else if (category == 2) {
-                    shareInfo += "Available on rent too at a price of Rs. " + price + ".";
+                    shareInfo += "Available on rent at a price of Rs. " + rentprice + "/per day";
                 }
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
@@ -144,7 +146,8 @@ public class ProductDetails extends AppCompatActivity {
 
                         Product product = dataSnapshot.getValue(Product.class);
                         title = product.getProductTitle();
-                        price = product.getProductPrice();
+                        rentprice = product.getProductRentPrice();
+                        sellprice = product.getProductSellPrice();
                         noOfUsersrated = product.getNoOfUsersRated();
                         ownerId = product.getOwnerId();
                         rentDuration = product.getRentDuration();
@@ -166,23 +169,62 @@ public class ProductDetails extends AppCompatActivity {
                                 .load(imageUrl)
                                 .into(imageView);
                         titleView.setText(title);
-                        ratingView.setText(rating+"");
-                        priceView.setText("Rs. "+price);
-                        descriptionview.setText(description);
                         rateBar.setRating(rating);
-                        if(rentDuration<=1)
+                        ratingView.setText(rating+"");
+                       /*rateBar.setVisibility(View.GONE);
+                       ratingView.setVisibility(View.GONE);*/
+                        if(from.equals("buyFragment"))
+                        {
+                            priceView.setText("Rs. "+sellprice);
+                            if(category==3)
+                            {
+                                description+= System.getProperty("line.separator");
+                                description+= "Available on rent too at a price of Rs. " + rentprice + "/per Day.";
+                                description+= System.getProperty("line.separator");
+                                if(rentDuration==1)
+                                    description+= "Rent Duration: "+rentDuration+" day";
+                                else
+                                    description+= "Rent Duration: "+rentDuration+" days";
+
+                            }
+                        }
+                        else
+                        {
+                            priceView.setText("Rs. "+rentprice + "/per Day");
+                            if(category==3)
+                            {
+                                description+= System.getProperty("line.separator");
+                                description+= "Available for buying too at a price of Rs. " + rentprice + "/per Day.";
+                                description+= System.getProperty("line.separator");
+                                if(rentDuration==1)
+                                    description+= "Rent Duration: "+rentDuration+" day";
+                                else
+                                    description+= "Rent Duration: "+rentDuration+" days";
+                            }
+                            else
+                            {
+                                description+= System.getProperty("line.separator");
+                                if(rentDuration==1)
+                                    description+= "Rent Duration: "+rentDuration+" day";
+                                else
+                                    description+= "Rent Duration: "+rentDuration+" days";
+                            }
+                        }
+                        descriptionview.setText(description);
+
+                        /*if(rentDuration<=1)
                             durationView.setText("Rent Duration: "+rentDuration+" day");
                         else
                             durationView.setText("Rent Duration: "+rentDuration+" days");
                         if(category == 3 || category ==2)
                         {
-
                             durationView.setVisibility(View.VISIBLE);
                         }
                         else
                         {
                             durationView.setVisibility(View.GONE);
-                        }
+                        }*/
+                        durationView.setVisibility(View.GONE);
                         FirebaseDatabase.getInstance().getReference().child("users").child(ownerId)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override

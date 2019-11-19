@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.menu_my_products:
-                startActivity(new Intent(this, MyProducts.class));
+                startActivity(new Intent(this,com.rohg007.android.instiflo.ui.MyProducts.class));
                 //Toast.makeText(this,"My Products Clicked",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_settings:

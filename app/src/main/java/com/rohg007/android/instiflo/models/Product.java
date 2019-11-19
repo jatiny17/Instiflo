@@ -9,7 +9,8 @@ public class Product {
     private String productTitle;
     private String productImageUrl;
     private int productCategory;
-    private int productPrice;
+    private int productRentPrice;
+    private int productSellPrice;
     private int productCount;
     private String productDescription;
     private int rentDuration;
@@ -19,11 +20,12 @@ public class Product {
     private int noOfUsersRated;
 
 
-    public Product(String productTitle, int i)
+    public Product()
     {
         this.productTitle = "";
         this.productCategory = 0;
-        this.productPrice=0;
+        this.productSellPrice=0;
+        this.productRentPrice=0;
         this.productCount=0;
         this.productDescription="";
         this.productImageUrl="";
@@ -34,13 +36,30 @@ public class Product {
     }
 
 
-    public Product(String productid,String ownerId,String productTitle, int productCategory,int rentDuration, int productPrice, int productCount, String productDescription, String productImageUrl) {
+    public int getProductRentPrice() {
+        return productRentPrice;
+    }
+
+    public void setProductRentPrice(int productRentPrice) {
+        this.productRentPrice = productRentPrice;
+    }
+
+    public int getProductSellPrice() {
+        return productSellPrice;
+    }
+
+    public void setProductSellPrice(int productSellPrice) {
+        this.productSellPrice = productSellPrice;
+    }
+
+    public Product(String productid, String ownerId, String productTitle, int productCategory, int rentDuration, int productRentPrice, int productSellPrice, int productCount, String productDescription, String productImageUrl) {
         this.productId = productid;
         this.ownerId=ownerId;
         this.productTitle = productTitle;
         this.productCategory = productCategory;
         this.rentDuration= rentDuration;
-        this.productPrice=productPrice;
+        this.productSellPrice=productSellPrice;
+        this.productRentPrice=productRentPrice;
         this.productCount=productCount;
         this.productDescription=productDescription;
         this.productImageUrl=productImageUrl;
@@ -74,14 +93,6 @@ public class Product {
 
     public void setProductCategory(int productCategory) {
         this.productCategory = productCategory;
-    }
-
-    public int getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
     }
 
     public String getProductDescription() {
@@ -132,8 +143,8 @@ public class Product {
         return noOfUsersRated;
     }
 
-    public void setNoOfUsersRated(int noOfUSersRated) {
-        this.noOfUsersRated = noOfUSersRated;
+    public void setNoOfUsersRated(int noOfUsersRated) {
+        this.noOfUsersRated = noOfUsersRated;
     }
 
     public int getProductCount() {
@@ -143,19 +154,4 @@ public class Product {
     public void setProductCount(int productCount) {
         this.productCount = productCount;
     }
-    public static ArrayList<Product> getTestProducts(){
-        ArrayList<Product> productList = new ArrayList<>();
-        productList.add(new Product("Product 1",99));
-        productList.add(new Product("Product 2",199));
-        productList.add(new Product("Product 3",299));
-        productList.add(new Product("Product 4",399));
-        productList.add(new Product("Product 5",99));
-        productList.add(new Product("Product 6",199));
-        productList.add(new Product("Product 7",299));
-        productList.add(new Product("Product 8",399));
-        productList.add(new Product("Product 9",199));
-        productList.add(new Product("Product 10",299));
-        return productList;
-    }
-
 }

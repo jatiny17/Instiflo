@@ -1,18 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
-    android:layout_margin="8dp">
+    app:cardElevation="8dp">
+
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/my_product_id">
+
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/event_title_image_card"
+            android:id="@+id/product_title_image_card"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="16dp"
@@ -20,40 +28,49 @@
             app:cardCornerRadius="18dp">
 
             <ImageView
-                android:id="@+id/event_title_image"
+                android:id="@+id/product_title_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/instiflo_dark_bg"/>
+                android:src="@drawable/instiflo_dark_bg" />
 
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/event_title_title"
+            android:id="@+id/product_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/event_title_image_card"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@id/product_title_image_card"
             android:text="Product"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
 
         <LinearLayout
-            android:id="@+id/event_title_date_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_below="@+id/product_title"
             android:layout_marginHorizontal="8dp"
-            android:layout_toRightOf="@+id/event_title_image_card"
-            android:layout_below="@+id/event_title_title"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/product_title_image_card"
+            android:orientation="vertical">
+
             <TextView
-                android:id="@+id/event_content_date"
+                android:id="@+id/product_sell_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rs. 90"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                android:layout_marginStart="2dp"/>
+                android:layout_marginStart="2dp"
+                android:text="Not available for sale"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+
+            <TextView
+                android:id="@+id/product_rent_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="Not available for rent"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
         </LinearLayout>
 
     </RelativeLayout>
