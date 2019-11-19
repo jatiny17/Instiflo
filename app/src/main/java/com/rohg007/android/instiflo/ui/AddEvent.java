@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rohg007.android.instiflo.MainActivity;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Event;
 import com.rohg007.android.instiflo.utils.DateSetter;
@@ -39,7 +40,7 @@ import java.io.IOException;
 public class AddEvent extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 2;
-    private static final int REQUEST_CODE = 500;
+    //    private static final int REQUEST_CODE = 500;
     private Uri mImageUri;
     private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
     private StorageReference storageReference= FirebaseStorage.getInstance().getReference();
@@ -170,6 +171,8 @@ public class AddEvent extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
+                                                    Intent intent=new Intent(AddEvent.this, MainActivity.class);
+                                                    startActivity(intent);
                                                     Toast.makeText(AddEvent.this, "Event Added Succesfully", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     Toast.makeText(AddEvent.this, "Event Adding Failed", Toast.LENGTH_SHORT).show();
@@ -200,6 +203,8 @@ public class AddEvent extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    Intent intent=new Intent(AddEvent.this, MainActivity.class);
+                                    startActivity(intent);
                                     Toast.makeText(AddEvent.this, "Event Added Succesfully", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(AddEvent.this, "Event Adding Failed", Toast.LENGTH_SHORT).show();

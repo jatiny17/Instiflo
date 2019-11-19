@@ -49,6 +49,8 @@ public class EventsFragment extends Fragment {
             RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
             ((FoldingCell) v).toggle(false);
             adapter.registerToggle(viewHolder.getAdapterPosition());
+
+
         }
     };
 
@@ -88,8 +90,8 @@ public class EventsFragment extends Fragment {
 
                     if(d1.after(d2)||d1.equals(d2))
                     {
-                            mEventList.add(event);
-                            adapter.notifyDataSetChanged();
+                        mEventList.add(event);
+                        adapter.notifyDataSetChanged();
                     }
                 }
 
