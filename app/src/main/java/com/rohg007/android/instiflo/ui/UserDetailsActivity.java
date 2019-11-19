@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -17,9 +20,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,6 +35,8 @@ import com.google.firebase.storage.UploadTask;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.User;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 public class UserDetailsActivity extends AppCompatActivity {
 
@@ -46,6 +54,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     private static final String LOG_TAG = UserDetailsActivity.class.getSimpleName();
     private static final int PICK_IMAGE_REQUEST = 2;
     private static final int REQUEST_CODE = 500;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +69,8 @@ public class UserDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("");
         }
-
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Uploading...");
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference("users");
 
@@ -111,12 +121,37 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     private void addDetailsToFirebase(){
-        try {
-            User user = new User(userId, firstName, lastName, email, address, phone,imageUrl);
-            databaseReference.child("users").child(userId).setValue(user);
-        } catch (Exception e){
-            Toast.makeText(getApplicationContext(),"Couldn't save data",Toast.LENGTH_SHORT).show();
-            Log.e(LOG_TAG,e.getMessage());
+        if(imageUri!=null){
+            progressDialog.show();
+            final StorageReference fileReference = storageReference.child(userId+(userId+System.currentTimeMillis()).hashCode()+"."+getFileExtension(imageUri));
+            UploadTask uploadTask = fileReference.putFile(imageUri);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            User user = new User(userId, firstName, lastName, email, address, phone,uri.toString());
+                            databaseReference.child("users").child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful())
+                                        Snackbar.make(userImageView,"User Successfully Updated",Snackbar.LENGTH_SHORT).show();
+                                    else
+                                        Snackbar.make(userImageView,"User could not be Updated",Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Snackbar.make(userImageView,"Couldn't Upload Image",Snackbar.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -130,10 +165,18 @@ public class UserDetailsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
             imageUri = data.getData();
-            userImageView.setImageURI(imageUri);
-            uploadImage();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                // Log.d(TAG, String.valueOf(bitmap))
+                userImageView.setImageBitmap(bitmap);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -141,32 +184,6 @@ public class UserDetailsActivity extends AppCompatActivity {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
-
-    private void uploadImage(){
-
-        if(imageUri!=null){
-            final StorageReference fileReference = storageReference.child(userId+(userId+System.currentTimeMillis()).hashCode()+"."+getFileExtension(imageUri));
-            fileReference.putFile(imageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    imageUrl=uri.toString();
-                                }
-                            });
-                            Toast.makeText(getApplicationContext(),"Image Upload Successful",Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(),"Problem Uploading Image",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
     }
 
     @Override
