@@ -237,10 +237,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
             return;
         }
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else
-            super.onBackPressed();
+        }
 
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();

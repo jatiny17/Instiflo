@@ -63,8 +63,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.user_details_toolbar);
         setSupportActionBar(toolbar);
-
-        if(getSupportActionBar()!=null){
+        if(getSupportActionBar()!=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("");

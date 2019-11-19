@@ -53,7 +53,7 @@ public class IssueFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_issue, container, false);
 
         final FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-        fab.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.event_add));
+        fab.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.add));
         databaseReference = FirebaseDatabase.getInstance().getReference("issues");
         issuesList = new ArrayList<>();
         listViewLostFound = v.findViewById(R.id.issue_list_view);

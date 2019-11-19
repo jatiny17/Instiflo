@@ -2,6 +2,7 @@ package com.rohg007.android.instiflo.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,14 @@ public class MyEvents extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_events);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_my_events);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         lstItems= new ArrayList<>();
         String current_uid = user.getUid(); // user.getUid() will return null if you are not logged in
@@ -63,5 +72,16 @@ public class MyEvents extends AppCompatActivity {
             // do something
         }
     });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

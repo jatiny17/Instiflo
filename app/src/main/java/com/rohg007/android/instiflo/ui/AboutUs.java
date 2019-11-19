@@ -34,7 +34,7 @@ public class AboutUs extends AppCompatActivity {
         img1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.setData(Uri.parse("linkedin.com/in/rohg007/"));
+                intent.setData(Uri.parse("https://www.linkedin.com/in/rohg007/"));
                 startActivity(intent);
             }
         });
