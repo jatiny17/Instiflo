@@ -56,6 +56,10 @@ public class IssueDetails extends AppCompatActivity {
         TextView datePostedTv = findViewById(R.id.issue_date);
         String issueDate = "Posted on: "+issue.getDatePosted();
         datePostedTv.setText(issueDate);
+
+        TextView descriptionTv = findViewById(R.id.issue_description);
+        descriptionTv.setText(issue.getmDescription());
+
         resolveButton = findViewById(R.id.resolve_button);
         approveButton = findViewById(R.id.approve_issue_button);
         declineButton = findViewById(R.id.decline_issue_button);
