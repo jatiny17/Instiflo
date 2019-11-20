@@ -23,6 +23,7 @@ import com.ramotion.foldingcell.FoldingCell;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Event;
 import com.rohg007.android.instiflo.utils.ImageRequester;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,6 +74,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsView
             holder.eventDescriptionContentView.setText(event.getEventDescription());
             imageRequester.setImageFromUrl(holder.eventImage,event.getImageId());
             imageRequester.setImageFromUrl(holder.eventImage2,event.getImageId());
+//            Picasso.get().load(event.getImageId()).into(holder.eventImage);
+//            Picasso.get().load(event.getImageId()).into(holder.eventImage2);
 
             holder.going_button.setOnClickListener(new View.OnClickListener() {
                 @Override

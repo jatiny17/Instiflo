@@ -192,7 +192,7 @@ public class IssueDetails extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                });
+                }).show();
     }
 
     private void approveIssue(Issue issue){
