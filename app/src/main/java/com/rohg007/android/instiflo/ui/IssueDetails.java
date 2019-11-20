@@ -16,14 +16,31 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
+import com.rohg007.android.instiflo.MainActivity;
 import com.rohg007.android.instiflo.R;
 import com.rohg007.android.instiflo.models.Issue;
+import com.rohg007.android.instiflo.utils.MySingleton;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class IssueDetails extends AppCompatActivity {
 
@@ -31,11 +48,21 @@ public class IssueDetails extends AppCompatActivity {
     Button resolveButton;
     Button approveButton;
     Button declineButton;
+    FirebaseMessaging fm ;
+    private static final int SENDER_ID = R.string.SENDER_ID;
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String serverKey = "key=" + "AAAAgrbR-uk:APA91bH8HX6SmQJvKnsjVHDFcR7qaYUuKYVz0juEUvg01VfTCQTwHztfygNOCENReXRldVU83j1Ge3IA9F0yVl0-mjwjwRizysrsdYMPksKTW0jC3R6I4TAY5PbxQEk9A3-VPz_d_lCH";
+    final private String contentType = "application/json";
+
+    String NOTIFICATION_TITLE="Issue Resolved";
+    String NOTIFICATION_MESSAGE;
+    String TOPIC="topics/Issue";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issue_details);
+        fm = FirebaseMessaging.getInstance();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("issues");
 
@@ -45,6 +72,9 @@ public class IssueDetails extends AppCompatActivity {
         int callingActivity = getIntent().getIntExtra("calling-activity",0);
 
         final Issue issue = (Issue) getIntent().getExtras().get("ISSUE");
+
+        NOTIFICATION_MESSAGE = issue.getLostFound()+" "+issue.getmObjectType()+" marked as resolved by "+ FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
         TextView issueTitleTv = findViewById(R.id.issue_title);
         String issueTitle = issue.getLostFound()+" "+issue.getmObjectType();
         issueTitleTv.setText(issueTitle);
@@ -185,6 +215,18 @@ public class IssueDetails extends AppCompatActivity {
                         resolveButton.setFocusable(false);
                         resolveButton.setClickable(false);
                         Snackbar.make(resolveButton,"Congratulations! Your issue is resolved",Snackbar.LENGTH_SHORT).show();
+                        JSONObject notification = new JSONObject();
+                        JSONObject notifcationBody = new JSONObject();
+                        try {
+                            notifcationBody.put("title", NOTIFICATION_TITLE);
+                            notifcationBody.put("body", NOTIFICATION_MESSAGE);
+
+                            notification.put("to", TOPIC);
+                            notification.put("data", notifcationBody);
+                        } catch (JSONException e) {
+                            Log.e("Notifivation", "onCreate: " + e.getMessage() );
+                        }
+                        sendNotification(notification);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -253,4 +295,31 @@ public class IssueDetails extends AppCompatActivity {
             Log.e("WS", "ERROR_OPEN_MESSANGER"+e.toString());
         }
     }
+
+    private void sendNotification(JSONObject notification){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("Notification", "onResponse: " + response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(IssueDetails.this, "Request error", Toast.LENGTH_LONG).show();
+                        Log.i("Notification", "onErrorResponse: Didn't work");
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+    }
 }
+
