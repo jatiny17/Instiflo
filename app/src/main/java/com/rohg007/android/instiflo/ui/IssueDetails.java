@@ -56,7 +56,7 @@ public class IssueDetails extends AppCompatActivity {
 
     String NOTIFICATION_TITLE="Issue Resolved";
     String NOTIFICATION_MESSAGE;
-    String TOPIC="topics/Issue";
+    String TOPIC="/topics/Issue";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +99,9 @@ public class IssueDetails extends AppCompatActivity {
             resolveButton.setVisibility(View.VISIBLE);
         else
             approveDeclineLayout.setVisibility(View.VISIBLE);
+
+        if(!issue.getmEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
+            resolveButton.setVisibility(View.GONE);
 
         resolveButton.setOnClickListener(new View.OnClickListener() {
             @Override
