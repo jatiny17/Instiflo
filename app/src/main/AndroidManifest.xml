@@ -22,7 +22,8 @@
         <activity android:name=".ui.AddProduct" />
         <activity android:name=".ui.AddEvent" />
         <activity android:name=".ui.ApproveIssue"/>
-        <activity android:name=".ui.AddEventActivity" />
+        <activity android:name=".ui.IssueDetails"/>
+        <activity android:name=".ui.MyIssues"/>
         <activity android:name=".ui.MyProducts" />
         <activity android:name=".ui.ProductDetails" />
         <activity android:name=".adapters.MyProductsViewHolder" />
